@@ -1,7 +1,7 @@
 # Destructuring Field Guide
 
-Name: Your Full Name  
-Student number: 0000000000
+Name: Şevval Boyraz  
+Student number: 2200004208
 
 Bonuses claimed: none yet (write them here, for example **Bonus 1: Tests**).
 

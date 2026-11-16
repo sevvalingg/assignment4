@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // Object destructuring (forms 5 to 10). Run with `node js/objects.mjs`.
 
 // Form 5 (worked example): take properties out of an object by name.

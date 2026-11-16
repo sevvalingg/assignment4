@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // Things that surprise people. Run with `node js/pitfalls.mjs`.
 
 // Pitfall 1 (worked example): destructuring undefined or null throws a TypeError.

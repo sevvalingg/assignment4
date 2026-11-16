@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // The same four array forms as js/arrays.mjs, now typed. Run with `npx tsx ts/arrays.ts`.
 
 // Form 1 (worked example): the return type of the function is a tuple.

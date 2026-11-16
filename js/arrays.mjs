@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // Array destructuring (forms 1 to 4). Plain JavaScript: run with `node js/arrays.mjs`.
 
 // Form 1 (worked example): take values out of an array by position.

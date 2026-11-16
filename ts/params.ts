@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // Forms 11 and 12 in TypeScript, and the typing rules for patterns in parameters.
 
 type TaskInput = { title: string; status?: 'todo' | 'done' }

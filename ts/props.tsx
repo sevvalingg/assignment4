@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // Props and children in TypeScript. Run with `npx tsx ts/props.tsx`.
 import type { ReactNode } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'

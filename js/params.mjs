@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // Destructuring in parameters and loops (forms 11 and 12). Run with `node js/params.mjs`.
 
 // Form 11 (worked example): an options object in the parameter list, with defaults.

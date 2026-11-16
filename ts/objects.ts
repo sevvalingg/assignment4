@@ -1,4 +1,4 @@
-// Your Name, student number
+// Şevval Boyraz, 2200004208
 // The same six object forms as js/objects.mjs, now typed.
 
 type Task = { id: string; title: string; status: 'todo' | 'in-progress' | 'done' }
