@@ -1,7 +1,5 @@
 // Şevval Boyraz, 2200004208
-// Array destructuring (forms 1 to 4). Plain JavaScript: run with `node js/arrays.mjs`.
 
-// Form 1 (worked example): take values out of an array by position.
 function minMax(numbers) {
   return [Math.min(...numbers), Math.max(...numbers)]
 }
@@ -9,10 +7,34 @@ const [lowest, highest] = minMax([4, 9, 2])
 console.log('form 1:', lowest, highest) // form 1: 2 9
 
 // Form 2: skip an item and collect the rest, [, second, ...others]
-// TODO
+// Haliç hattı: the first pier is where the ferry leaves, so I skip it.
+const halicLine = ['Üsküdar', 'Karaköy', 'Kasımpaşa', 'Fener', 'Balat', 'Eyüp']
+const [, firstStop, ...remainingStops] = halicLine
+console.log('form 2:', firstStop, remainingStops)
+
+// Form 2 with a line that has only one pier.
+// tahminim:onlyStop hata verir afterThat ise boş bir dizi olur
+const shortLine = ['Kabataş']
+const [, onlyStop, ...afterThat] = shortLine
+console.log('form 2 (one pier):', onlyStop, afterThat)
 
 // Form 3: swap two variables without a temporary, [a, b] = [b, a]
-// TODO
+// The return trip of the Haliç line: departure and arrival change places.
+let departure = 'Üsküdar'
+let arrival = 'Eyüp'
+console.log('form 3 (going):', departure, '->', arrival)
+;[departure, arrival] = [arrival, departure]
+console.log('form 3 (return):', departure, '->', arrival)
 
 // Form 4: default values, const [a = 1] = []
-// TODO
+// If a route has no piers yet, use the busiest pair as a fallback.
+const [from = 'Eminönü', to = 'Kadıköy'] = []
+console.log('form 4 (empty):', from, '->', to)
+
+// Only the first pier is given, so only the second default is used.
+const [from2 = 'Eminönü', to2 = 'Kadıköy'] = ['Beşiktaş']
+console.log('form 4 (one given):', from2, '->', to2)
+
+// undefined triggers the default, null does not.
+const [from3 = 'Eminönü', to3 = 'Kadıköy'] = [undefined, null]
+console.log('form 4 (undefined, null):', from3, '->', to3)
