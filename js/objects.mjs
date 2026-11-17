@@ -8,11 +8,11 @@ console.log('form 5:', title, status) // form 5: Buy milk todo
 
 // Form 5 with my own data: one ferry sailing.
 const sailing = {
-  line: 'Kadıköy-Karaköy',
+  line: 'Kadıköy-Karaköy-Eminönü',
   departure: '08:15',
   operator: 'Şehir Hatları',
   pier: { name: 'Kadıköy', side: 'Anadolu' },
-  stops: ['Kadıköy', 'Haydarpaşa', 'Karaköy'],
+  stops: ['Kadıköy', 'Karaköy', 'Eminönü'],
 }
 const { line, departure } = sailing
 console.log('form 5 (ferry):', line, departure)
@@ -56,8 +56,8 @@ try {
 }
 
 // Form 10: computed key, { [key]: value }
-// A small timetable: departure time -> line. The time I look for is decided at run time.
-const timetable = { '07:30': 'Kadıköy-Karaköy', '08:15': 'Üsküdar-Eminönü', '09:00': 'Beşiktaş-Kadıköy' }
+// A small timetable (sample times, not the real schedule): departure time -> line. The time I look for is decided at run time.
+const timetable = { '07:30': 'Kadıköy-Karaköy-Eminönü', '08:15': 'Üsküdar-Eminönü', '09:00': 'Beşiktaş-Kadıköy' }
 const wanted = '08:15'
 const { [wanted]: lineAtTime } = timetable
 console.log('form 10:', wanted, lineAtTime)

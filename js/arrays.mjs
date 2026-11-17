@@ -8,7 +8,7 @@ console.log('form 1:', lowest, highest) // form 1: 2 9
 
 // Form 2: skip an item and collect the rest, [, second, ...others]
 // Haliç hattı: the first pier is where the ferry leaves, so I skip it.
-const halicLine = ['Üsküdar', 'Karaköy', 'Kasımpaşa', 'Fener', 'Balat', 'Eyüp']
+const halicLine = ['Beşiktaş', 'Kabataş', 'Karaköy', 'Kasımpaşa', 'Hasköy', 'Sütlüce', 'Eyüp']
 const [, firstStop, ...remainingStops] = halicLine
 console.log('form 2:', firstStop, remainingStops)
 
@@ -20,7 +20,7 @@ console.log('form 2 (one pier):', onlyStop, afterThat)
 
 // Form 3: swap two variables without a temporary, [a, b] = [b, a]
 // The return trip of the Haliç line: departure and arrival change places.
-let departure = 'Üsküdar'
+let departure = 'Beşiktaş'
 let arrival = 'Eyüp'
 console.log('form 3 (going):', departure, '->', arrival)
 ;[departure, arrival] = [arrival, departure]
