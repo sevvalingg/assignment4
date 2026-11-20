@@ -2036,45 +2036,90 @@ library and the open-source project.)
 \hypertarget{my-own-log}{%
 \section{My own log}\label{my-own-log}}
 
+Things that really went wrong or surprised me while I worked on this
+guide, with the exact messages.
+
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  \textbf{npm install in the wrong folder.} Error:
-  \texttt{npm error enoent Could not read package.\allowbreak{}json:\allowbreak{} Error:\allowbreak{} ENOENT:\allowbreak{} no such file or directory,\allowbreak{} open 'C:\allowbreak{}\textbackslash{}Users\textbackslash{}Şevval\textbackslash{}webproje\textbackslash{}package.\allowbreak{}json'}
-  (write here what happened and what you learned)
+  \textbf{I ran \texttt{npm install} in the wrong folder.} I opened the
+  terminal in \texttt{webproje} and not in
+  \texttt{webproje\textbackslash{}assignment4}, and got:
+  \texttt{npm error enoent Could not read package.\allowbreak{}json:\allowbreak{} Error:\allowbreak{} ENOENT:\allowbreak{} no such file or directory,\allowbreak{} open 'C:\allowbreak{}\textbackslash{}Users\textbackslash{}Şevval\textbackslash{}webproje\textbackslash{}package.\allowbreak{}json'}.
+  npm looks for \texttt{package.\allowbreak{}json} only in the folder
+  the terminal is in. After \texttt{cd assignment4} it worked. Since
+  then I open the \texttt{assignment4} folder itself in VS Code, so the
+  terminal starts in the right place.
 \item
-  \textbf{Form 2 with a one-pier line.} My guess (written in the file
-  before running):
-  \texttt{onlyStop hata verir,\allowbreak{} afterThat boş dizi olur}.
-  Real output:
-  \texttt{form 2 (\allowbreak{}one pier):\allowbreak{} undefined [\allowbreak{}]}
-  (write here what was wrong in your guess and why)
+  \textbf{My wrong guess about form 2 with a one-pier line.} Before
+  running
+  \texttt{const [\allowbreak{},\allowbreak{} onlyStop,\allowbreak{} .\allowbreak{}.\allowbreak{}.\allowbreak{}afterThat] =\allowbreak{} [\allowbreak{}'Kabataş']}
+  I wrote my guess in the file:
+  \texttt{onlyStop hata verir,\allowbreak{} afterThat boş dizi olur}
+  ("onlyStop throws an error, afterThat is an empty array"). The real
+  output was
+  \texttt{form 2 (\allowbreak{}one pier):\allowbreak{} undefined [\allowbreak{}]}.
+  I was right about the rest, but wrong about \texttt{onlyStop}: reading
+  an item that is not there is not an error in JavaScript, it is just
+  \texttt{undefined}, the same as \texttt{shortLine[\allowbreak{}1]}.
 \item
-  \textbf{Form 9 with a missing \texttt{pier}.} My guess:
-  \texttt{nightPier undefined olur,\allowbreak{} program devam eder}.
-  Real output:
-  \texttt{Cannot read properties of undefined (\allowbreak{}reading 'name')}
-  (write here why)
+  \textbf{My wrong guess about form 9 with a missing \texttt{pier}.}
+  This time I guessed the opposite: after form 2 I thought a missing
+  part always gives \texttt{undefined}, so \texttt{nightPier} would be
+  \texttt{undefined} and the program would continue. The real output was
+  \texttt{Cannot read properties of undefined (\allowbreak{}reading 'name')}.
+  Writing the pattern as two plain lines showed me why:
+  \texttt{const pier =\allowbreak{} nightSailing.\allowbreak{}pier} is
+  \texttt{undefined} (fine), but \texttt{pier.\allowbreak{}name} tries
+  to go \emph{into} \texttt{undefined}, and that throws. Reading a
+  missing value is OK, going inside it is not.
 \item
-  \textbf{TypeScript:
-  \texttt{firstStop.\allowbreak{}toUpperCase(\allowbreak{})}.} Error:
+  \textbf{TypeScript did not let me call a method on a destructured
+  item.} I changed \texttt{firstStop ?? 'no stop'} to
+  \texttt{firstStop.\allowbreak{}toUpperCase(\allowbreak{})} in
+  \texttt{ts/\allowbreak{}arrays.\allowbreak{}ts} and
+  \texttt{npm run check} said:
   \texttt{ts/\allowbreak{}arrays.\allowbreak{}ts:\allowbreak{}16:\allowbreak{}24 - error TS18048:\allowbreak{} 'firstStop' is possibly 'undefined'.\allowbreak{}}
-  (write here)
+  It is the same \texttt{undefined} as in entry 2, but TypeScript finds
+  it before the code runs, because \texttt{noUncheckedIndexedAccess} is
+  on and a \texttt{string[\allowbreak{}]} can be shorter than the
+  pattern. I put the \texttt{??} back.
 \item
-  \textbf{Pasting terminal output back into the terminal.} PowerShell
-  ran every line as a command:
-  \texttt{The term 'form' is not recognized as the name of a cmdlet .\allowbreak{}.\allowbreak{}.\allowbreak{}}
-  and
+  \textbf{I pasted terminal output back into the terminal (twice).} I
+  copied the output to show it, and then pasted it into the PowerShell
+  terminal instead of my command. PowerShell tried to run every line:
+  \texttt{The term 'form' is not recognized as the name of a cmdlet .\allowbreak{}.\allowbreak{}.\allowbreak{}},
+  and for the lines that started with my prompt:
   \texttt{Get-Process :\allowbreak{} A positional parameter cannot be found that accepts argument 'npm'.\allowbreak{}}
-  (write here: why did
+  The second message confused me until I learned that in PowerShell
+  \texttt{PS} is a short name (alias) for \texttt{Get-Process}, so
   \texttt{PS C:\allowbreak{}\textbackslash{}.\allowbreak{}.\allowbreak{}.\allowbreak{}> npm run check}
-  call Get-Process?)
+  was read as \texttt{Get-Process} with strange arguments. Nothing was
+  changed, no command really ran. Now I type the command or copy only
+  that one line.
 \item
-  \textbf{\texttt{npm warn install-scripts .\allowbreak{}.\allowbreak{}.\allowbreak{} esbuild@0.\allowbreak{}28.\allowbreak{}2 (\allowbreak{}postinstall:\allowbreak{} node install.\allowbreak{}js)}}
-  (write here what it means and why tsx still worked)
+  \textbf{\texttt{npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:\allowbreak{} esbuild@0.\allowbreak{}28.\allowbreak{}2 (\allowbreak{}postinstall:\allowbreak{} node install.\allowbreak{}js)}}
+  My npm does not run install scripts of packages until I allow them. I
+  thought \texttt{tsx} would not work without it, but
+  \texttt{npm run all} worked, because esbuild\textquotesingle s Windows
+  binary comes as a separate optional package
+  (\texttt{@esbuild/\allowbreak{}win32-x64}) and does not need that
+  script.
 \item
-  \textbf{\texttt{warning:\allowbreak{} in the working copy of 'js/\allowbreak{}arrays.\allowbreak{}mjs',\allowbreak{} LF will be replaced by CRLF}}
-  (write here)
+  \textbf{\texttt{warning:\allowbreak{} in the working copy of 'js/\allowbreak{}arrays.\allowbreak{}mjs',\allowbreak{} LF will be replaced by CRLF the next time Git touches it}}
+  I got this on almost every \texttt{git add}. It is not an error: the
+  files have Linux line endings (LF) and Git on Windows will
+  store/convert them to Windows line endings (CRLF). The code and the
+  output do not change.
+\item
+  \textbf{\texttt{output.\allowbreak{}txt} and PowerShell.} The handout
+  says \texttt{npm run all > output.\allowbreak{}txt}, but in Windows
+  PowerShell \texttt{>} writes the file as UTF-16, which breaks how the
+  file shows on GitHub. I used
+  \texttt{cmd /\allowbreak{}c "npm run all > output.\allowbreak{}txt"}
+  so that the file is UTF-8 and \texttt{Kadıköy} stays \texttt{Kadıköy}.
+  Two React warnings still appeared in the terminal and not in the file,
+  because they go to stderr and \texttt{>} only saves stdout.
 \end{enumerate}
 
 \end{document}

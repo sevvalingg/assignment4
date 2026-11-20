@@ -1460,38 +1460,61 @@ folder, so my cases come from the installed library and the open-source project.
 
 ## My own log
 
-<!--
-  ŞEVVAL: Bu bölümü sen yazacaksın, kendi cümlelerinle (İngilizce).
-  Hoca burada senin gerçek hatalarını ve yanlış tahminlerini istiyor.
-  Her madde için: ne yaptın, ne bekledin, ne oldu (hata mesajı aynen), ne öğrendin.
-  Aşağıdaki başlıklar ve hata mesajları gerçek; açıklamaları sen doldur, sonra bu yorumu sil.
--->
+Things that really went wrong or surprised me while I worked on this guide, with the exact
+messages.
 
-1. **npm install in the wrong folder.**
-   Error: `npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open 'C:\Users\Şevval\webproje\package.json'`
-   (write here what happened and what you learned)
+1. **I ran `npm install` in the wrong folder.**
+   I opened the terminal in `webproje` and not in `webproje\assignment4`, and got:
+   `npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open 'C:\Users\Şevval\webproje\package.json'`.
+   npm looks for `package.json` only in the folder the terminal is in. After `cd assignment4` it
+   worked. Since then I open the `assignment4` folder itself in VS Code, so the terminal starts
+   in the right place.
 
-2. **Form 2 with a one-pier line.**
-   My guess (written in the file before running): `onlyStop hata verir, afterThat boş dizi olur`.
-   Real output: `form 2 (one pier): undefined []`
-   (write here what was wrong in your guess and why)
+2. **My wrong guess about form 2 with a one-pier line.**
+   Before running `const [, onlyStop, ...afterThat] = ['Kabataş']` I wrote my guess in the file:
+   `onlyStop hata verir, afterThat boş dizi olur` ("onlyStop throws an error, afterThat is an
+   empty array"). The real output was `form 2 (one pier): undefined []`. I was right about the
+   rest, but wrong about `onlyStop`: reading an item that is not there is not an error in
+   JavaScript, it is just `undefined`, the same as `shortLine[1]`.
 
-3. **Form 9 with a missing `pier`.**
-   My guess: `nightPier undefined olur, program devam eder`.
-   Real output: `Cannot read properties of undefined (reading 'name')`
-   (write here why)
+3. **My wrong guess about form 9 with a missing `pier`.**
+   This time I guessed the opposite: after form 2 I thought a missing part always gives
+   `undefined`, so `nightPier` would be `undefined` and the program would continue. The real
+   output was `Cannot read properties of undefined (reading 'name')`. Writing the pattern as two
+   plain lines showed me why: `const pier = nightSailing.pier` is `undefined` (fine), but
+   `pier.name` tries to go *into* `undefined`, and that throws. Reading a missing value is OK,
+   going inside it is not.
 
-4. **TypeScript: `firstStop.toUpperCase()`.**
-   Error: `ts/arrays.ts:16:24 - error TS18048: 'firstStop' is possibly 'undefined'.`
-   (write here)
+4. **TypeScript did not let me call a method on a destructured item.**
+   I changed `firstStop ?? 'no stop'` to `firstStop.toUpperCase()` in `ts/arrays.ts` and
+   `npm run check` said:
+   `ts/arrays.ts:16:24 - error TS18048: 'firstStop' is possibly 'undefined'.`
+   It is the same `undefined` as in entry 2, but TypeScript finds it before the code runs,
+   because `noUncheckedIndexedAccess` is on and a `string[]` can be shorter than the pattern.
+   I put the `??` back.
 
-5. **Pasting terminal output back into the terminal.**
-   PowerShell ran every line as a command: `The term 'form' is not recognized as the name of a cmdlet ...`
-   and `Get-Process : A positional parameter cannot be found that accepts argument 'npm'.`
-   (write here: why did `PS C:\...> npm run check` call Get-Process?)
+5. **I pasted terminal output back into the terminal (twice).**
+   I copied the output to show it, and then pasted it into the PowerShell terminal instead of
+   my command. PowerShell tried to run every line: `The term 'form' is not recognized as the
+   name of a cmdlet ...`, and for the lines that started with my prompt:
+   `Get-Process : A positional parameter cannot be found that accepts argument 'npm'.` The
+   second message confused me until I learned that in PowerShell `PS` is a short name
+   (alias) for `Get-Process`, so `PS C:\...> npm run check` was read as `Get-Process` with
+   strange arguments. Nothing was changed, no command really ran. Now I type the command or
+   copy only that one line.
 
-6. **`npm warn install-scripts ... esbuild@0.28.2 (postinstall: node install.js)`**
-   (write here what it means and why tsx still worked)
+6. **`npm warn install-scripts 1 package has install scripts not yet covered by allowScripts: esbuild@0.28.2 (postinstall: node install.js)`**
+   My npm does not run install scripts of packages until I allow them. I thought `tsx` would
+   not work without it, but `npm run all` worked, because esbuild's Windows binary comes as a
+   separate optional package (`@esbuild/win32-x64`) and does not need that script.
 
-7. **`warning: in the working copy of 'js/arrays.mjs', LF will be replaced by CRLF`**
-   (write here)
+7. **`warning: in the working copy of 'js/arrays.mjs', LF will be replaced by CRLF the next time Git touches it`**
+   I got this on almost every `git add`. It is not an error: the files have Linux line endings
+   (LF) and Git on Windows will store/convert them to Windows line endings (CRLF). The code and
+   the output do not change.
+
+8. **`output.txt` and PowerShell.**
+   The handout says `npm run all > output.txt`, but in Windows PowerShell `>` writes the file
+   as UTF-16, which breaks how the file shows on GitHub. I used `cmd /c "npm run all > output.txt"`
+   so that the file is UTF-8 and `Kadıköy` stays `Kadıköy`. Two React warnings still appeared in
+   the terminal and not in the file, because they go to stderr and `>` only saves stdout.
