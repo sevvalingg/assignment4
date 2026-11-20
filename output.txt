@@ -1,0 +1,157 @@
+
+> destructuring-guide@0.0.0 all
+> npm run js && npm run ts
+
+
+> destructuring-guide@0.0.0 js
+> node js/arrays.mjs && node js/objects.mjs && node js/params.mjs && node js/pitfalls.mjs && tsx js/props.jsx
+
+form 1: 2 9
+form 1 (ferry): 08:15 Kadıköy-Karaköy-Eminönü
+form 2: Kabataş [ 'Karaköy', 'Kasımpaşa', 'Hasköy', 'Sütlüce', 'Eyüp' ]
+form 2 (one pier): undefined []
+form 3 (going): Beşiktaş -> Eyüp
+form 3 (return): Eyüp -> Beşiktaş
+form 4 (empty): Eminönü -> Kadıköy
+form 4 (one given): Beşiktaş -> Kadıköy
+form 4 (undefined, null): Eminönü -> null
+form 5: Buy milk todo
+form 5 (ferry): Kadıköy-Karaköy-Eminönü 08:15
+form 6: Üsküdar-Eminönü 19:40
+form 7 (missing): false 300
+form 7 (given): true 300
+form 8: Şehir Hatları
+form 8 rest: {
+  line: 'Kadıköy-Karaköy-Eminönü',
+  departure: '08:15',
+  pier: { name: 'Kadıköy', side: 'Anadolu' },
+  stops: [ 'Kadıköy', 'Karaköy', 'Eminönü' ]
+}
+form 9: Kadıköy Anadolu Kadıköy Eminönü
+form 9 (no pier): Cannot read properties of undefined (reading 'name')
+form 10: 08:15 Üsküdar-Eminönü
+form 10 (field): operator Şehir Hatları
+form 11: { title: 'Read', status: 'todo' }
+form 11 (all): Kadıköy-Beşiktaş (ekspres), kalkış: 18:10
+form 11 (only line): Üsküdar-Karaköy-Eminönü (normal), kalkış: saat belli değil
+form 11 (nothing): undefined (normal), kalkış: saat belli değil
+form 11 (no = {}): TypeError - Cannot destructure property 'line' of 'undefined' as it is undefined.
+form 11b: [ 'Kadıköy -> Eminönü', 'Beşiktaş -> Üsküdar', 'Kabataş -> Kadıköy' ]
+form 12 (object): 07:30 Kadıköy-Karaköy-Eminönü
+form 12 (object): 08:15 Üsküdar-Eminönü
+form 12 (object): 09:00 Beşiktaş-Kadıköy
+form 12 (Map): Kadıköy 5
+form 12 (Map): Beşiktaş 2
+form 12 (Map): Üsküdar 1
+form 12 (no pattern): Kadıköy 5
+form 12 (no pattern): Beşiktaş 2
+form 12 (no pattern): Üsküdar 1
+pitfall 1: TypeError
+pitfall 2: null
+pitfall 2 (fix with ??): 300
+pitfall 3: SyntaxError - Unexpected token '='
+pitfall 3 (fix): Kadıköy-Beşiktaş
+pitfall 4 (original): Moda
+pitfall 4 (rest): Moda
+pitfall 4 (same object?): true true
+pitfall 5 (object): Beşiktaş -> Üsküdar
+pitfall 5 (array): departure = Üsküdar , arrival = Beşiktaş
+pitfall 6 before: Eminönü Kadıköy
+pitfall 6: TypeError - Cannot set properties of undefined (setting 'Kadıköy')
+A: <section><h2>Hi</h2>text</section>
+B: <section><h2>Hi</h2>text</section>
+P1 A: <section><h2>Kadıköy-Beşiktaş</h2><p>Şehir Hatları</p>Her 30 dakikada bir</section>
+P1 B: <section><h2>Kadıköy-Beşiktaş</h2><p>Şehir Hatları</p>Her 30 dakikada bir</section>
+P1 props object: { line: 'Kabataş-Kadıköy', express: true, children: 'sabah seferi' }
+P2 between tags: <section><h2>Üsküdar-Eminönü</h2><p></p>İlk sefer 07:00</section>
+P2 as attribute: <section><h2>Üsküdar-Eminönü</h2><p></p>İlk sefer 07:00</section>
+P2 both: <section><h2>Üsküdar-Eminönü</h2><p></p>between tags</section>
+P2 key: <span>key is undefined</span>
+P3 string: <div>[Kadıköy]</div>
+P3 number: <div>[42]</div>
+P3 zero: <div>[0]</div>
+P3 one element: <div>[<b>Eminönü</b>]</div>
+P3 several elements: <div>[<b>Beşiktaş</b><i>Üsküdar</i>]</div>
+P3 undefined: <div>[]</div>
+P3 null: <div>[]</div>
+P3 false: <div>[]</div>
+P3 true: <div>[]</div>
+P3 empty string: <div>[]</div>
+P3 function: <div>[]</div>
+P3 function, called: <p>Sonraki vapur 08:15</p>
+P4 rest: <section id="kadikoy" class="pier" data-side="Anadolu"><h3>Kadıköy İskelesi</h3>Beşiktaş, Eminönü, Karaköy</section>
+P4 spread then explicit: <section class="fixed">x</section>
+P4 explicit then spread: <section class="from-parent">x</section>
+P4 title not in rest: <section lang="tr"><h3>Beşiktaş</h3>x</section>
+P5 props: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</li><li>08:15</li></ul><footer>Tarife değişebilir</footer></article>
+P5 children: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</li><li>08:15</li></ul><footer>Tarife değişebilir</footer></article>
+P6 missing: <span class="badge">normal sefer</span>
+P6 undefined: <span class="badge">normal sefer</span>
+P6 null: <span class="badge"></span>
+P6 given: <span class="badge">ekspres</span>
+extra change props: <p>TypeError: Cannot assign to read only property &#x27;line&#x27; of object &#x27;#&lt;Object&gt;&#x27;</p>
+
+> destructuring-guide@0.0.0 ts
+> tsx ts/arrays.ts && tsx ts/objects.ts && tsx ts/params.ts && tsx ts/types.ts && tsx ts/props.tsx
+
+form 1: 2 9
+form 1 (ferry): 08:15 Kadıköy-Karaköy-Eminönü
+form 2: Kabataş [ 'Karaköy', 'Kasımpaşa', 'Hasköy', 'Sütlüce', 'Eyüp' ]
+form 2 (tuple): KADIKÖY
+form 3 (going): Beşiktaş -> Eyüp
+form 3 (return): Eyüp -> Beşiktaş
+form 4 (empty): Eminönü -> Kadıköy
+form 4 (one given): Beşiktaş -> Kadıköy
+form 4 (undefined, null): Eminönü -> null
+form 5: Buy milk todo
+form 5 (ferry): Kadıköy-Karaköy-Eminönü 08:15
+form 6: Üsküdar-Eminönü 19:40
+form 7 (missing): false 300
+form 7 (given): true 300
+form 8: Şehir Hatları [ 'line', 'departure', 'pier', 'stops' ]
+form 9: Kadıköy Anadolu Kadıköy Eminönü
+form 9 (no pier): bilinmiyor
+form 10: 08:15 Üsküdar-Eminönü
+form 10 (field): operator Şehir Hatları
+form 11: { title: 'Read', status: 'todo' }
+form 11 (all): Kadıköy-Beşiktaş (ekspres), kalkış: 18:10
+form 11 (only line): Üsküdar-Karaköy-Eminönü (normal), kalkış: saat belli değil
+form 11 (nothing): hat belli değil (normal), kalkış: saat belli değil
+form 11b: [ 'Kadıköy -> Eminönü', 'Beşiktaş -> Üsküdar', 'Kabataş -> Kadıköy' ]
+form 12 (object): 07:30 Kadıköy-Karaköy-Eminönü
+form 12 (object): 08:15 Üsküdar-Eminönü
+form 12 (object): 09:00 Beşiktaş-Kadıköy
+form 12 (Map): Kadıköy 5
+form 12 (Map): Beşiktaş 2
+form 12 (Map): Üsküdar 1
+T1: 1
+T1 (confusion): a variable named string = Kadıköy-Karaköy-Eminönü
+T1 (correct): 08:15 300
+T2 (tuple): 08:15 Üsküdar-Eminönü
+T2 (no as const): Kadıköy
+T2 (as const): Kadıköy Eminönü
+T3 (check): BEŞIKTAŞ
+T3 (??): BEŞIKTAŞ
+T3 (default): BEŞIKTAŞ
+T4: undefined false null
+T5 (runs anyway, but): undefined
+T5 (fix): 2
+<section><h2>Hi</h2>text</section>
+P1: <section><h2>Kadıköy-Beşiktaş</h2><p>Şehir Hatları</p>Her 30 dakikada bir</section>
+P2 between tags: <section><h2>Üsküdar-Eminönü</h2><p>Şehir Hatları</p>İlk sefer 07:00</section>
+P2 as attribute: <section><h2>Üsküdar-Eminönü</h2><p>Şehir Hatları</p>İlk sefer 07:00</section>
+P3 string: <div>[Kadıköy]</div>
+P3 number: <div>[0]</div>
+P3 element: <div>[<b>Eminönü</b>]</div>
+P3 null: <div>[]</div>
+P3 false: <div>[]</div>
+P3 render prop: <p>Sonraki vapur 08:15</p>
+P4: <section id="kadikoy" class="pier"><h3>Kadıköy İskelesi</h3>Beşiktaş, Eminönü, Karaköy</section>
+P4 order: <section class="fixed">x</section>
+P5: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</li><li>08:15</li></ul><footer>Tarife değişebilir</footer></article>
+P6 undefined: <span class="badge">normal sefer</span>
+P6 null: <span class="badge"></span>
+P7 ReactNode: <p><b>Beşiktaş:</b> iskele yenileniyor</p>
+P7 ReactNode, empty: <p><b>Beşiktaş:</b> </p>
+P7 PropsWithChildren: <p>Kabataş → Kadıköy (20 dk)</p>
+P7 ComponentProps: <button type="button" disabled="" aria-label="bilet al">Bilet al (59 TL)</button>
