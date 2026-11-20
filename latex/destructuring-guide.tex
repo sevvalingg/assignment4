@@ -129,9 +129,9 @@ npm run bonus    # the Bonus 2 experiments (not part of npm run all)
 
 \texttt{output.\allowbreak{}txt} is the real output of
 \texttt{npm run all} on my machine. Two lines that you see in the
-terminal are \textbf{not} in \texttt{output.\allowbreak{}txt}: React
-prints its warnings (about \texttt{key} and about a function as a child,
-see P2 and P3) to stderr, and \texttt{>} only saves stdout.
+terminal are not in \texttt{output.\allowbreak{}txt}: React prints its
+warnings (about \texttt{key} and about a function as a child, see P2 and
+P3) to stderr, and \texttt{>} only saves stdout.
 
 \hypertarget{my-data-istanbul-ferries}{%
 \section{My data: Istanbul ferries}\label{my-data-istanbul-ferries}}
@@ -159,9 +159,8 @@ const sailing = {
 \section{Field guide}\label{field-guide}}
 
 Every entry has the same parts: syntax, example, real output, the same
-code \textbf{without} destructuring (one plain assignment per variable,
-which is what the pattern really does), \emph{use it when} and
-\emph{watch out}.
+code without destructuring (one plain assignment per variable, which is
+what the pattern really does), \emph{use it when} and \emph{watch out}.
 
 \hypertarget{form-1-values-by-position-const-x-y--f}{%
 \subsection{\texorpdfstring{Form 1: values by position,
@@ -240,18 +239,17 @@ pier the ferry leaves from) and you want "the next one" and "all the
 others".
 
 \textbf{Watch out:} the empty place before the first comma is easy to
-miss when you read the code. A missing item is \textbf{not} an error, it
-is \texttt{undefined}, but the rest is never \texttt{undefined}: it is
+miss when you read the code. A missing item is not an error, it is
+\texttt{undefined}, but the rest is never \texttt{undefined}: it is
 always an array, an empty one when nothing is left. The rest must be
 last
 (\texttt{[\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}a,\allowbreak{} b]}
 is a syntax error). Rest in a pattern
 (\texttt{.\allowbreak{}.\allowbreak{}.\allowbreak{}remainingStops}, on
-the left) \textbf{collects} items into a new array; spread in an
-expression
+the left) collects items into a new array; spread in an expression
 (\texttt{[\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}halicLine]},
-on the right) \textbf{expands} an array into items. Same three dots,
-opposite jobs.
+on the right) expands an array into items. Same three dots, opposite
+jobs.
 
 \hypertarget{form-3-swap-two-variables-a-b--b-a}{%
 \subsection{\texorpdfstring{Form 3: swap two variables,
@@ -333,10 +331,9 @@ const to = list[1] === undefined ? 'Kadıköy' : list[1]
 \textbf{Use it when:} a list may be shorter than you need and there is a
 sensible fallback.
 
-\textbf{Watch out:} the default is used \textbf{only for
-\texttt{undefined}}. \texttt{null} is a real value and stays
-\texttt{null} (last line of the output). The plain version above shows
-it: the check is
+\textbf{Watch out:} the default is used only for \texttt{undefined}.
+\texttt{null} is a real value and stays \texttt{null} (last line of the
+output). The plain version above shows it: the check is
 \texttt{=\allowbreak{}=\allowbreak{}=\allowbreak{} undefined}, not "is
 empty".
 
@@ -367,11 +364,11 @@ const departure = sailing.departure
 \textbf{Use it when:} you need a few fields of an object and the field
 names are good variable names.
 
-\textbf{Watch out:} the variable name \textbf{must} be the property
-name; a name that is not in the object gives \texttt{undefined} without
-an error (a typo like \texttt{\{ departue \}} is silent in JavaScript,
-TypeScript catches it, see T5). The order inside \texttt{\{ \}} does not
-matter (pitfall 5).
+\textbf{Watch out:} the variable name must be the property name; a name
+that is not in the object gives \texttt{undefined} without an error (a
+typo like \texttt{\{ departue \}} is silent in JavaScript, TypeScript
+catches it, see T5). The order inside \texttt{\{ \}} does not matter
+(pitfall 5).
 
 \hypertarget{form-6-rename-while-you-take-it-const--a-alpha---t}{%
 \subsection{\texorpdfstring{Form 6: rename while you take it,
@@ -409,7 +406,7 @@ or the name is not clear here.
 "take \texttt{line}, call it \texttt{eveningLine}": the source is on the
 left of the colon, the new name on the right. After this, \texttt{line}
 from \emph{this} object is not a variable. In TypeScript the colon is
-\textbf{not} a type (T1).
+not a type (T1).
 
 \hypertarget{form-7-default-values-in-objects-const--a--1---t}{%
 \subsection{\texorpdfstring{Form 7: default values in objects,
@@ -448,9 +445,9 @@ it (most ferries are not express).
 
 \textbf{Watch out:} \texttt{capacity:\allowbreak{} undefined} written in
 the object still gets the default, because the rule is "the value is
-\texttt{undefined}", not "the key is missing". \texttt{null} does
-\textbf{not} get the default (pitfall 2, P6). Rename and default can be
-combined: \texttt{capacity:\allowbreak{} seats =\allowbreak{} 300}.
+\texttt{undefined}", not "the key is missing". \texttt{null} does not
+get the default (pitfall 2, P6). Rename and default can be combined:
+\texttt{capacity:\allowbreak{} seats =\allowbreak{} 300}.
 
 \hypertarget{form-8-rest-in-an-object-const--a-others---t}{%
 \subsection{\texorpdfstring{Form 8: rest in an object,
@@ -492,10 +489,10 @@ delete sailingInfo.operator
 \texttt{\{ title,\allowbreak{} children,\allowbreak{} .\allowbreak{}.\allowbreak{}.\allowbreak{}rest \}}
 (P4).
 
-\textbf{Watch out:} \texttt{sailingInfo} is a \textbf{new} object, but
-it is a shallow copy: \texttt{sailingInfo.\allowbreak{}pier} is the same
-object as \texttt{sailing.\allowbreak{}pier} (pitfall 4). The rest must
-be the last item in the pattern.
+\textbf{Watch out:} \texttt{sailingInfo} is a new object, but it is a
+shallow copy: \texttt{sailingInfo.\allowbreak{}pier} is the same object
+as \texttt{sailing.\allowbreak{}pier} (pitfall 4). The rest must be the
+last item in the pattern.
 
 \hypertarget{form-9-nested-patterns-and-arrays-inside-objects-const--p--x--list-first---t}{%
 \subsection{\texorpdfstring{Form 9: nested patterns and arrays inside
@@ -542,12 +539,12 @@ const lastPier = sailing.stops[2]
 \textbf{Use it when:} you need a few values from deep inside an object,
 and the shape is known.
 
-\textbf{Watch out:} \texttt{pier} and \texttt{stops} are \textbf{not}
-variables here; \texttt{pier:\allowbreak{}} only means "go inside". If
-the inner object is missing, a missing field (\texttt{undefined}) is
-fine, but going \emph{into} it is a \texttt{TypeError} (second output
-line): the plain version is
-\texttt{sailing.\allowbreak{}pier.\allowbreak{}name} with
+\textbf{Watch out:} \texttt{pier} and \texttt{stops} are not variables
+here; \texttt{pier:\allowbreak{}} only means "go inside". If the inner
+object is missing, a missing field (\texttt{undefined}) is fine, but
+going \emph{into} it is a \texttt{TypeError} (second output line): the
+plain version is \texttt{sailing.\allowbreak{}pier.\allowbreak{}name}
+with
 \texttt{sailing.\allowbreak{}pier =\allowbreak{}=\allowbreak{}=\allowbreak{} undefined}.
 The fix is a default for the inner object:
 \texttt{const \{ pier:\allowbreak{} \{ name \} =\allowbreak{} \{\} \} =\allowbreak{} nightSailing}.
@@ -591,7 +588,7 @@ picked, a field name from a setting).
 \textbf{Watch out:} a computed key always needs a new name after the
 colon (\texttt{\{ [\allowbreak{}wanted] \}} alone is a syntax error,
 there is no name to give the variable). \texttt{[\allowbreak{}wanted]}
-means "the \textbf{value} of \texttt{wanted}", not a key called
+means "the value of \texttt{wanted}", not a key called
 \texttt{"wanted"}. Honestly the plain
 \texttt{timetable[\allowbreak{}wanted]} is shorter; the pattern is
 useful when you take several things at once.
@@ -647,11 +644,11 @@ function describeSailing(options) {
 writes names instead of remembering an order, and can leave things out.
 Every React component is this form (P1).
 
-\textbf{Watch out:} there are \textbf{two} defaults: the ones inside the
-pattern (for missing fields) and \texttt{=\allowbreak{} \{\}} after it
-(for a missing argument). Without \texttt{=\allowbreak{} \{\}}, calling
-with no argument throws the \texttt{TypeError} in the fourth output
-line, because there is no object to take apart.
+\textbf{Watch out:} there are two defaults: the ones inside the pattern
+(for missing fields) and \texttt{=\allowbreak{} \{\}} after it (for a
+missing argument). Without \texttt{=\allowbreak{} \{\}}, calling with no
+argument throws the \texttt{TypeError} in the fourth output line,
+because there is no object to take apart.
 
 \hypertarget{form-12-patterns-in-loops-for-const-k-v-of-objectentrieso-and-map-entries}{%
 \subsection{\texorpdfstring{Form 12: patterns in loops,
@@ -699,7 +696,7 @@ for (const entry of myTrips) {
 arrays, and \texttt{Object.\allowbreak{}entries} turns an object into
 the same shape.
 
-\textbf{Watch out:} a plain object is \textbf{not} iterable:
+\textbf{Watch out:} a plain object is not iterable:
 \texttt{for (\allowbreak{}const [\allowbreak{}k,\allowbreak{} v] of timetable)}
 is a \texttt{TypeError}, you need \texttt{Object.\allowbreak{}entries}.
 Each pair is an array, so the pattern uses \texttt{[\allowbreak{} ]},
@@ -771,12 +768,12 @@ pitfall 3: SyntaxError - Unexpected token '='
 pitfall 3 (fix): Kadıköy-Beşiktaş
 \end{minted}
 
-\textbf{Why:} at the start of a statement \texttt{\{} opens a
-\textbf{block}, not an object pattern, so \texttt{\{ line \}} is a block
-with the word \texttt{line} in it, and the \texttt{=\allowbreak{}} after
-a block makes no sense. Parentheses make it an expression. (I compile
-the bad line with \texttt{new Function} so that the rest of the file
-still runs; written directly, the whole file would not start.)
+\textbf{Why:} at the start of a statement \texttt{\{} opens a block, not
+an object pattern, so \texttt{\{ line \}} is a block with the word
+\texttt{line} in it, and the \texttt{=\allowbreak{}} after a block makes
+no sense. Parentheses make it an expression. (I compile the bad line
+with \texttt{new Function} so that the rest of the file still runs;
+written directly, the whole file would not start.)
 
 \hypertarget{pitfall-4-it-copies-references-not-objects}{%
 \subsection{Pitfall 4: it copies references, not
@@ -824,12 +821,11 @@ pitfall 5 (object): Beşiktaş -> Üsküdar
 pitfall 5 (array): departure = Üsküdar , arrival = Beşiktaş
 \end{minted}
 
-\textbf{Why:} object patterns match by \textbf{name}, array patterns by
-\textbf{position}. In the array version my names are wrong (Beşiktaş is
-the departure) and JavaScript cannot know it. This is the reason
-React\textquotesingle s \texttt{useState} returns an array (you choose
-the names) and most other APIs return objects (the names are fixed and
-safe).
+\textbf{Why:} object patterns match by name, array patterns by position.
+In the array version my names are wrong (Beşiktaş is the departure) and
+JavaScript cannot know it. This is the reason React\textquotesingle s
+\texttt{useState} returns an array (you choose the names) and most other
+APIs return objects (the names are fixed and safe).
 
 \hypertarget{pitfall-6-a-swap-without-a-semicolon-on-the-line-before}{%
 \subsection{Pitfall 6: a swap without a semicolon on the line
@@ -892,13 +888,13 @@ P1 B: <section><h2>Kadıköy-Beşiktaş</h2><p>Şehir Hatları</p>Her 30 dakikad
 P1 props object: { line: 'Kabataş-Kadıköy', express: true, children: 'sabah seferi' }
 \end{minted}
 
-React calls the component as a function with \textbf{one} argument: an
-object made from the JSX attributes, plus \texttt{children}.
-\texttt{LineCardB} is form 11 (a pattern in the parameter list) applied
-to that object with form 5 (properties by name). \texttt{LineCardA} is
-the same code without destructuring. The printed object shows that
-\texttt{children} is simply one more field of it, next to \texttt{line},
-and that \texttt{express} with no value becomes \texttt{true}.
+React calls the component as a function with one argument: an object
+made from the JSX attributes, plus \texttt{children}. \texttt{LineCardB}
+is form 11 (a pattern in the parameter list) applied to that object with
+form 5 (properties by name). \texttt{LineCardA} is the same code without
+destructuring. The printed object shows that \texttt{children} is simply
+one more field of it, next to \texttt{line}, and that \texttt{express}
+with no value becomes \texttt{true}.
 
 \hypertarget{p2-children-is-only-a-prop}{%
 \subsection{P2: children is only a
@@ -954,8 +950,7 @@ children & output & appears? \\
 \texttt{<div>[\allowbreak{}Kadıköy]</\allowbreak{}div>} & yes \\
 \texttt{42} & \texttt{<div>[\allowbreak{}42]</\allowbreak{}div>} &
 yes \\
-\texttt{0} & \texttt{<div>[\allowbreak{}0]</\allowbreak{}div>} &
-\textbf{yes} \\
+\texttt{0} & \texttt{<div>[\allowbreak{}0]</\allowbreak{}div>} & yes \\
 \texttt{<b>Eminönü</\allowbreak{}b>} &
 \texttt{<div>[\allowbreak{}<b>Eminönü</\allowbreak{}b>]</\allowbreak{}div>}
 & yes \\
@@ -985,8 +980,8 @@ write
 \texttt{\{count > 0 \&\& .\allowbreak{}.\allowbreak{}.\allowbreak{}\}}.
 A function is not something React can render; it warns
 \texttt{Functions are not valid as a React child} and renders nothing. A
-function \emph{does} work as children when the component \textbf{calls}
-it (a "render prop"):
+function \emph{does} work as children when the component calls it (a
+"render prop"):
 
 \begin{minted}{jsx}
 function NextSailing({ children }) {
@@ -1034,8 +1029,8 @@ spread onto the real \texttt{<section>}. This is how a component lets
 the caller add any HTML attribute without listing them all.
 
 The order of \texttt{\{.\allowbreak{}.\allowbreak{}.\allowbreak{}rest\}}
-and an explicit prop decides who wins: \textbf{the last one written
-wins}, exactly like keys in an object literal
+and an explicit prop decides who wins: the last one written wins,
+exactly like keys in an object literal
 (\texttt{\{ .\allowbreak{}.\allowbreak{}.\allowbreak{}rest,\allowbreak{} className:\allowbreak{} 'fixed' \}}
 vs
 \texttt{\{ className:\allowbreak{} 'fixed',\allowbreak{} .\allowbreak{}.\allowbreak{}.\allowbreak{}rest \}}).
@@ -1069,15 +1064,15 @@ P5 props: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</l
 P5 children: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</li><li>08:15</li></ul><footer>Tarife değişebilir</footer></article>
 \end{minted}
 
-The HTML is the same; the difference is \textbf{who decides the
-structure}. With \texttt{header} and \texttt{footer} props, the
-component owns the layout: every timetable card has the header first,
-the list in a \texttt{<ul>}, the footer last, and the caller cannot get
-it wrong. With children only, the component is just a frame and the
-caller writes everything inside, so the caller can also forget the
-footer or put things in another order. I would use props for named parts
-that every card must have in fixed places (a header, a footer, an icon)
-and children for the main free content, which is what
+The HTML is the same; the difference is who decides the structure. With
+\texttt{header} and \texttt{footer} props, the component owns the
+layout: every timetable card has the header first, the list in a
+\texttt{<ul>}, the footer last, and the caller cannot get it wrong. With
+children only, the component is just a frame and the caller writes
+everything inside, so the caller can also forget the footer or put
+things in another order. I would use props for named parts that every
+card must have in fixed places (a header, a footer, an icon) and
+children for the main free content, which is what
 \texttt{TimetableWithProps} does: named slots as props, the list as
 children.
 
@@ -1108,8 +1103,8 @@ This is form 7 on the props object. A missing prop and
 is \texttt{undefined}), so both get the default.
 \texttt{kind=\allowbreak{}\{null\}} is a value, the default is not used,
 and \texttt{null} renders nothing (P3): on the screen the user sees an
-\textbf{empty badge}, a coloured box with no text. If \texttt{null} can
-come from data, use \texttt{kind ?? 'normal sefer'} in the body.
+empty badge, a coloured box with no text. If \texttt{null} can come from
+data, use \texttt{kind ?? 'normal sefer'} in the body.
 
 \hypertarget{extra-a-component-that-changes-its-props}{%
 \subsection{Extra: a component that changes its
@@ -1203,12 +1198,11 @@ The rejected lines are written as comments in
 because the handout allows \texttt{@ts-expect-error} only in T5. I got
 the messages by compiling each line once.
 
-Summary of the difference: \textbf{props} are the named inputs of a
-component (attributes in JSX); \textbf{children} is one specific prop
-that holds what you write between the tags. Use named props when the
-component must know \emph{what} each thing is and \emph{where} it goes;
-use children when the component only wraps content it does not need to
-understand.
+Summary of the difference: props are the named inputs of a component
+(attributes in JSX); \textbf{children} is one specific prop that holds
+what you write between the tags. Use named props when the component must
+know \emph{what} each thing is and \emph{where} it goes; use children
+when the component only wraps content it does not need to understand.
 
 \hypertarget{typescript-topics}{%
 \section{TypeScript topics}\label{typescript-topics}}
@@ -1237,9 +1231,9 @@ T1 (correct): 08:15 300
 
 The first line compiles, which is the dangerous part: it creates a
 variable called \texttt{string}. Inside a pattern the colon always means
-"rename" (form 6). The type is written once, \textbf{after} the whole
-pattern, describing the whole object. With two fields renamed to
-\texttt{string} you would get
+"rename" (form 6). The type is written once, after the whole pattern,
+describing the whole object. With two fields renamed to \texttt{string}
+you would get
 \texttt{error TS2451:\allowbreak{} Cannot redeclare block-scoped variable 'string'.\allowbreak{}}
 
 \hypertarget{t2-tuple-return-types-and-as-const}{%
@@ -1271,7 +1265,7 @@ T2 (as const): Kadıköy Eminönü
 A tuple type fixes the length and the type of each position, so
 destructured items are never \texttt{undefined}. An array literal
 without annotation is just \texttt{string[\allowbreak{}]}.
-\texttt{as const} makes it a readonly tuple of \textbf{literal} types:
+\texttt{as const} makes it a readonly tuple of literal types:
 \texttt{fixedFrom} has the type \texttt{'Kadıköy'}, which is why it can
 be assigned to a variable of type \texttt{'Kadıköy'}; \texttt{plainFrom}
 could not.
@@ -1322,10 +1316,10 @@ const { note = 'not yok' } = options               // string | null
 
 An optional field (\texttt{?}) adds \texttt{undefined} to the type of
 the variable. A default removes \texttt{undefined}, because TypeScript
-knows the run-time rule (form 7). It does \textbf{not} remove
-\texttt{null}, because at run time \texttt{null} does not trigger the
-default (pitfall 2): the type and the behaviour agree, and the output
-shows \texttt{null}.
+knows the run-time rule (form 7). It does not remove \texttt{null},
+because at run time \texttt{null} does not trigger the default (pitfall
+2): the type and the behaviour agree, and the output shows
+\texttt{null}.
 
 \hypertarget{t5-one-compile-error-caused-by-destructuring}{%
 \subsection{T5: one compile error caused by
@@ -1451,9 +1445,9 @@ in the folder \texttt{latex/\allowbreak{}}:
 \item
   \texttt{latex/\allowbreak{}destructuring-guide.\allowbreak{}pdf}: the
   PDF, with a title page, a linked table of contents, numbered sections,
-  headers with my name, code typeset with the \textbf{minted} package
-  (Pygments colours, line breaking for long lines) and the tables as
-  real \texttt{longtable} tables.
+  headers with my name, code typeset with the minted package (Pygments
+  colours, line breaking for long lines) and the tables as real
+  \texttt{longtable} tables.
 \item
   \texttt{latex/\allowbreak{}build.\allowbreak{}sh},
   \texttt{latex/\allowbreak{}header.\allowbreak{}tex},
@@ -1527,10 +1521,10 @@ An array pattern does not read \texttt{value[\allowbreak{}0]},
 and then \texttt{next(\allowbreak{})} once for each place in the
 pattern. That is why it works on strings, \texttt{Set}, \texttt{Map} and
 generators. It also explains the emoji: a string\textquotesingle s
-iterator walks by \textbf{code points}, so the ship comes out whole,
-while \texttt{shipLine[\allowbreak{}0]} reads one UTF-16 unit, which is
-only half of the emoji. A \texttt{Set} iterator never gives the
-duplicate, so the third place is \texttt{undefined}.
+iterator walks by code points, so the ship comes out whole, while
+\texttt{shipLine[\allowbreak{}0]} reads one UTF-16 unit, which is only
+half of the emoji. A \texttt{Set} iterator never gives the duplicate, so
+the third place is \texttt{undefined}.
 
 To see the calls, I used a generator that logs every pier it gives and
 has a \texttt{finally} block:
@@ -1566,10 +1560,10 @@ D1 generator rest: [ 'Kabataş', 'Karaköy', 'Kasımpaşa' ]
 \end{minted}
 
 With \texttt{[\allowbreak{}g1,\allowbreak{} g2]} the generator gave only
-\textbf{two} piers and then its \texttt{finally} ran \textbf{without}
-"loop ended normally". So the pattern did not run the generator to the
-end; it took two values and then closed the iterator early by calling
-its \texttt{return(\allowbreak{})} method (the specification calls this
+two piers and then its \texttt{finally} ran without "loop ended
+normally". So the pattern did not run the generator to the end; it took
+two values and then closed the iterator early by calling its
+\texttt{return(\allowbreak{})} method (the specification calls this
 \emph{IteratorClose}). With a rest element the pattern must ask for
 everything, so the loop really ends. A first version of this experiment
 printed "return() was called" in the \texttt{finally} block, which was
@@ -1610,10 +1604,10 @@ D2 earlier variable: Kadıköy Kadıköy
 D2 later variable: ReferenceError - Cannot access 'y' before initialization
 \end{minted}
 
-A default is an expression that runs \textbf{only when it is needed}:
-the function with a side effect was not called for the first pattern at
-all. Defaults run left to right, one variable after the other, so a
-default can use a variable that is \emph{earlier} in the same pattern
+A default is an expression that runs only when it is needed: the
+function with a side effect was not called for the first pattern at all.
+Defaults run left to right, one variable after the other, so a default
+can use a variable that is \emph{earlier} in the same pattern
 (\texttt{to =\allowbreak{} from}), but a \emph{later} one is still in
 the temporal dead zone, the same as using a \texttt{let} before its
 line.
@@ -1673,10 +1667,10 @@ D3 dynamic import + rename: function
   can take only \texttt{name} and \texttt{message}.
 \item
   \texttt{for.\allowbreak{}.\allowbreak{}.\allowbreak{}in} gives the
-  \textbf{keys} as strings. A pattern there is legal but means something
+  keys as strings. A pattern there is legal but means something
   surprising: \texttt{[\allowbreak{}firstChar,\allowbreak{} secondChar]}
-  takes the first two \textbf{letters} of each key (a string is
-  iterable, D1). For pairs you need
+  takes the first two letters of each key (a string is iterable, D1).
+  For pairs you need
   \texttt{for.\allowbreak{}.\allowbreak{}.\allowbreak{}of} with
   \texttt{Object.\allowbreak{}entries} (form 12).
 \item
@@ -1755,7 +1749,7 @@ is the type-level twin of
 \texttt{const [\allowbreak{}f,\allowbreak{} .\allowbreak{}.\allowbreak{}.\allowbreak{}r] =\allowbreak{} value}:
 TypeScript tries to match the tuple type against the pattern and, if it
 fits, gives names to the parts. \texttt{Last} shows something the value
-level \textbf{cannot} do: a rest element before the last one
+level cannot do: a rest element before the last one
 (\texttt{[\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}unknown[\allowbreak{}],\allowbreak{} infer L]})
 is allowed in types, but
 \texttt{const [\allowbreak{}.\allowbreak{}.\allowbreak{}.\allowbreak{}a,\allowbreak{} last] =\allowbreak{} list}
@@ -1879,10 +1873,9 @@ Form 1: values by position from
 \texttt{const parts =\allowbreak{} process.\allowbreak{}versions.\allowbreak{}node.\allowbreak{}split(\allowbreak{}".\allowbreak{}"); const major =\allowbreak{} parts[\allowbreak{}0]; const minor =\allowbreak{} parts[\allowbreak{}1];}.
 The patch number is simply not named (the pattern is shorter than the
 array, and that is fine). A detail: \texttt{major} and \texttt{minor}
-are \textbf{strings}, which is why every comparison has a \texttt{+} in
-front to make them numbers. In TypeScript with
-\texttt{noUncheckedIndexedAccess} they would be
-\texttt{string |\allowbreak{} undefined} (T3).
+are strings, which is why every comparison has a \texttt{+} in front to
+make them numbers. In TypeScript with \texttt{noUncheckedIndexedAccess}
+they would be \texttt{string |\allowbreak{} undefined} (T3).
 
 \hypertarget{case-4-esbuild-mainjs2271-form-1-a-function-that-returns-a-pair}{%
 \subsection{\texorpdfstring{Case 4: esbuild,
@@ -1970,14 +1963,14 @@ const { heading, children, forceMount, ...etc } = props
 )}
 \end{minted}
 
-This is exactly my P5 decision. A group has a \textbf{heading} and
-\textbf{items}. The heading is a \textbf{prop}, because the component
-must know which part is the heading: it puts it in its own
-\texttt{<div>}, gives it an \texttt{id} and \texttt{aria-hidden}, and
-does not render it at all when it is missing
+This is exactly my P5 decision. A group has a heading and items. The
+heading is a \textbf{prop}, because the component must know which part
+is the heading: it puts it in its own \texttt{<div>}, gives it an
+\texttt{id} and \texttt{aria-hidden}, and does not render it at all when
+it is missing
 (\texttt{heading \&\& .\allowbreak{}.\allowbreak{}.\allowbreak{}}, the
-\texttt{false} case of P3). The items are \textbf{children}, because the
-group does not need to understand them, it only wraps them. Used like:
+\texttt{false} case of P3). The items are children, because the group
+does not need to understand them, it only wraps them. Used like:
 \texttt{<Command.\allowbreak{}Group heading=\allowbreak{}"Piers"><Command.\allowbreak{}Item>Kadıköy</\allowbreak{}Command.\allowbreak{}Item></\allowbreak{}Command.\allowbreak{}Group>}.
 
 \textbf{Without destructuring:}

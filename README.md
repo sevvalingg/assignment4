@@ -17,7 +17,7 @@ npm run bonus    # the Bonus 2 experiments (not part of npm run all)
 ```
 
 `output.txt` is the real output of `npm run all` on my machine. Two lines that you see in the
-terminal are **not** in `output.txt`: React prints its warnings (about `key` and about a function
+terminal are not in `output.txt`: React prints its warnings (about `key` and about a function
 as a child, see P2 and P3) to stderr, and `>` only saves stdout.
 
 ## My data: Istanbul ferries
@@ -41,7 +41,7 @@ const sailing = {
 
 ## Field guide
 
-Every entry has the same parts: syntax, example, real output, the same code **without**
+Every entry has the same parts: syntax, example, real output, the same code without
 destructuring (one plain assignment per variable, which is what the pattern really does),
 *use it when* and *watch out*.
 
@@ -111,10 +111,10 @@ const remainingStops = halicLine.slice(2)
 you want "the next one" and "all the others".
 
 **Watch out:** the empty place before the first comma is easy to miss when you read the code. A
-missing item is **not** an error, it is `undefined`, but the rest is never `undefined`: it is
+missing item is not an error, it is `undefined`, but the rest is never `undefined`: it is
 always an array, an empty one when nothing is left. The rest must be last (`[...a, b]` is a
-syntax error). Rest in a pattern (`...remainingStops`, on the left) **collects** items into a new
-array; spread in an expression (`[...halicLine]`, on the right) **expands** an array into items.
+syntax error). Rest in a pattern (`...remainingStops`, on the left) collects items into a new
+array; spread in an expression (`[...halicLine]`, on the right) expands an array into items.
 Same three dots, opposite jobs.
 
 ### Form 3: swap two variables, `[a, b] = [b, a]`
@@ -187,7 +187,7 @@ const to = list[1] === undefined ? 'Kadıköy' : list[1]
 
 **Use it when:** a list may be shorter than you need and there is a sensible fallback.
 
-**Watch out:** the default is used **only for `undefined`**. `null` is a real value and stays
+**Watch out:** the default is used only for `undefined`. `null` is a real value and stays
 `null` (last line of the output). The plain version above shows it: the check is
 `=== undefined`, not "is empty".
 
@@ -213,7 +213,7 @@ const departure = sailing.departure
 
 **Use it when:** you need a few fields of an object and the field names are good variable names.
 
-**Watch out:** the variable name **must** be the property name; a name that is not in the object
+**Watch out:** the variable name must be the property name; a name that is not in the object
 gives `undefined` without an error (a typo like `{ departue }` is silent in JavaScript, TypeScript
 catches it, see T5). The order inside `{ }` does not matter (pitfall 5).
 
@@ -245,7 +245,7 @@ case: `line` exists from form 5, and `const { line } = evening` would be
 
 **Watch out:** read `line: eveningLine` as "take `line`, call it `eveningLine`": the source is on
 the left of the colon, the new name on the right. After this, `line` from *this* object is not a
-variable. In TypeScript the colon is **not** a type (T1).
+variable. In TypeScript the colon is not a type (T1).
 
 ### Form 7: default values in objects, `const { a = 1 } = t`
 
@@ -280,7 +280,7 @@ const capacity = sailing.capacity === undefined ? 300 : sailing.capacity
 express).
 
 **Watch out:** `capacity: undefined` written in the object still gets the default, because the
-rule is "the value is `undefined`", not "the key is missing". `null` does **not** get the default
+rule is "the value is `undefined`", not "the key is missing". `null` does not get the default
 (pitfall 2, P6). Rename and default can be combined: `capacity: seats = 300`.
 
 ### Form 8: rest in an object, `const { a, ...others } = t`
@@ -318,7 +318,7 @@ delete sailingInfo.operator
 **Use it when:** you want to take one or two fields out and pass "everything else" on. This is
 exactly what React components do with `{ title, children, ...rest }` (P4).
 
-**Watch out:** `sailingInfo` is a **new** object, but it is a shallow copy: `sailingInfo.pier` is
+**Watch out:** `sailingInfo` is a new object, but it is a shallow copy: `sailingInfo.pier` is
 the same object as `sailing.pier` (pitfall 4). The rest must be the last item in the pattern.
 
 ### Form 9: nested patterns and arrays inside objects, `const { p: { x }, list: [first] } = t`
@@ -361,7 +361,7 @@ const lastPier = sailing.stops[2]
 
 **Use it when:** you need a few values from deep inside an object, and the shape is known.
 
-**Watch out:** `pier` and `stops` are **not** variables here; `pier:` only means "go inside". If
+**Watch out:** `pier` and `stops` are not variables here; `pier:` only means "go inside". If
 the inner object is missing, a missing field (`undefined`) is fine, but going *into* it is a
 `TypeError` (second output line): the plain version is `sailing.pier.name` with
 `sailing.pier === undefined`. The fix is a default for the inner object:
@@ -401,7 +401,7 @@ const lineAtTime = timetable[wanted]
 setting).
 
 **Watch out:** a computed key always needs a new name after the colon (`{ [wanted] }` alone is a
-syntax error, there is no name to give the variable). `[wanted]` means "the **value** of
+syntax error, there is no name to give the variable). `[wanted]` means "the value of
 `wanted`", not a key called `"wanted"`. Honestly the plain `timetable[wanted]` is shorter; the
 pattern is useful when you take several things at once.
 
@@ -451,7 +451,7 @@ function describeSailing(options) {
 **Use it when:** a function takes an "options object": the caller writes names instead of
 remembering an order, and can leave things out. Every React component is this form (P1).
 
-**Watch out:** there are **two** defaults: the ones inside the pattern (for missing fields) and
+**Watch out:** there are two defaults: the ones inside the pattern (for missing fields) and
 `= {}` after it (for a missing argument). Without `= {}`, calling with no argument throws the
 `TypeError` in the fourth output line, because there is no object to take apart.
 
@@ -494,7 +494,7 @@ for (const entry of myTrips) {
 **Use it when:** you loop over key–value pairs. Iterating a `Map` gives `[key, value]` arrays,
 and `Object.entries` turns an object into the same shape.
 
-**Watch out:** a plain object is **not** iterable: `for (const [k, v] of timetable)` is a
+**Watch out:** a plain object is not iterable: `for (const [k, v] of timetable)` is a
 `TypeError`, you need `Object.entries`. Each pair is an array, so the pattern uses `[ ]`, not
 `{ }`. `Object.entries` gives keys as strings, even for number keys.
 
@@ -548,7 +548,7 @@ pitfall 3: SyntaxError - Unexpected token '='
 pitfall 3 (fix): Kadıköy-Beşiktaş
 ```
 
-**Why:** at the start of a statement `{` opens a **block**, not an object pattern, so `{ line }`
+**Why:** at the start of a statement `{` opens a block, not an object pattern, so `{ line }`
 is a block with the word `line` in it, and the `=` after a block makes no sense. Parentheses make
 it an expression. (I compile the bad line with `new Function` so that the rest of the file still
 runs; written directly, the whole file would not start.)
@@ -590,7 +590,7 @@ pitfall 5 (object): Beşiktaş -> Üsküdar
 pitfall 5 (array): departure = Üsküdar , arrival = Beşiktaş
 ```
 
-**Why:** object patterns match by **name**, array patterns by **position**. In the array version
+**Why:** object patterns match by name, array patterns by position. In the array version
 my names are wrong (Beşiktaş is the departure) and JavaScript cannot know it. This is the reason
 React's `useState` returns an array (you choose the names) and most other APIs return objects
 (the names are fixed and safe).
@@ -646,7 +646,7 @@ P1 B: <section><h2>Kadıköy-Beşiktaş</h2><p>Şehir Hatları</p>Her 30 dakikad
 P1 props object: { line: 'Kabataş-Kadıköy', express: true, children: 'sabah seferi' }
 ```
 
-React calls the component as a function with **one** argument: an object made from the JSX
+React calls the component as a function with one argument: an object made from the JSX
 attributes, plus `children`. `LineCardB` is form 11 (a pattern in the parameter list) applied to
 that object with form 5 (properties by name). `LineCardA` is the same code without
 destructuring. The printed object shows that `children` is simply one more field of it, next to
@@ -691,7 +691,7 @@ Each value rendered inside `<div>[{children}]</div>`:
 |---|---|---|
 | `'Kadıköy'` | `<div>[Kadıköy]</div>` | yes |
 | `42` | `<div>[42]</div>` | yes |
-| `0` | `<div>[0]</div>` | **yes** |
+| `0` | `<div>[0]</div>` | yes |
 | `<b>Eminönü</b>` | `<div>[<b>Eminönü</b>]</div>` | yes |
 | `[<b>Beşiktaş</b>, <i>Üsküdar</i>]` | `<div>[<b>Beşiktaş</b><i>Üsküdar</i>]</div>` | yes, one after the other |
 | `undefined` | `<div>[]</div>` | no |
@@ -706,7 +706,7 @@ works: when the condition is `false` nothing appears. The surprise is `0`: it is
 printed. `{count && <b>...</b>}` with `count = 0` shows a `0` on the screen; write
 `{count > 0 && ...}`. A function is not something React can render; it warns
 `Functions are not valid as a React child` and renders nothing. A function *does* work as
-children when the component **calls** it (a "render prop"):
+children when the component calls it (a "render prop"):
 
 ```jsx
 function NextSailing({ children }) {
@@ -748,7 +748,7 @@ itself are taken out by name, and every other prop (`id`, `className`, `data-sid
 `rest` and is spread onto the real `<section>`. This is how a component lets the caller add any
 HTML attribute without listing them all.
 
-The order of `{...rest}` and an explicit prop decides who wins: **the last one written wins**,
+The order of `{...rest}` and an explicit prop decides who wins: the last one written wins,
 exactly like keys in an object literal (`{ ...rest, className: 'fixed' }` vs
 `{ className: 'fixed', ...rest }`). Put the explicit prop after the spread when the component
 must keep control, before it when the caller may override it. A name taken out by the pattern
@@ -778,7 +778,7 @@ P5 props: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</l
 P5 children: <article><header>Kadıköy-Karaköy-Eminönü</header><ul><li>07:30</li><li>08:15</li></ul><footer>Tarife değişebilir</footer></article>
 ```
 
-The HTML is the same; the difference is **who decides the structure**. With `header` and `footer`
+The HTML is the same; the difference is who decides the structure. With `header` and `footer`
 props, the component owns the layout: every timetable card has the header first, the list in a
 `<ul>`, the footer last, and the caller cannot get it wrong. With children only, the component is
 just a frame and the caller writes everything inside, so the caller can also forget the footer
@@ -809,7 +809,7 @@ P6 given: <span class="badge">ekspres</span>
 
 This is form 7 on the props object. A missing prop and `kind={undefined}` are the same thing
 (the value is `undefined`), so both get the default. `kind={null}` is a value, the default is not
-used, and `null` renders nothing (P3): on the screen the user sees an **empty badge**, a coloured
+used, and `null` renders nothing (P3): on the screen the user sees an empty badge, a coloured
 box with no text. If `null` can come from data, use `kind ?? 'normal sefer'` in the body.
 
 ### Extra: a component that changes its props
@@ -875,7 +875,7 @@ without `price` gives `error TS2741: Property 'price' is missing in type '{ chil
 The rejected lines are written as comments in `ts/props.tsx` with these messages, because the
 handout allows `@ts-expect-error` only in T5. I got the messages by compiling each line once.
 
-Summary of the difference: **props** are the named inputs of a component (attributes in JSX);
+Summary of the difference: props are the named inputs of a component (attributes in JSX);
 **children** is one specific prop that holds what you write between the tags. Use named props
 when the component must know *what* each thing is and *where* it goes; use children when the
 component only wraps content it does not need to understand.
@@ -902,7 +902,7 @@ T1 (correct): 08:15 300
 ```
 
 The first line compiles, which is the dangerous part: it creates a variable called `string`.
-Inside a pattern the colon always means "rename" (form 6). The type is written once, **after**
+Inside a pattern the colon always means "rename" (form 6). The type is written once, after
 the whole pattern, describing the whole object. With two fields renamed to `string` you would
 get `error TS2451: Cannot redeclare block-scoped variable 'string'.`
 
@@ -932,7 +932,7 @@ T2 (as const): Kadıköy Eminönü
 
 A tuple type fixes the length and the type of each position, so destructured items are never
 `undefined`. An array literal without annotation is just `string[]`. `as const` makes it a
-readonly tuple of **literal** types: `fixedFrom` has the type `'Kadıköy'`, which is why it can be
+readonly tuple of literal types: `fixedFrom` has the type `'Kadıköy'`, which is why it can be
 assigned to a variable of type `'Kadıköy'`; `plainFrom` could not.
 
 ### T3: `noUncheckedIndexedAccess`
@@ -968,7 +968,7 @@ const { note = 'not yok' } = options               // string | null
 **Output:** `T4: undefined false null`
 
 An optional field (`?`) adds `undefined` to the type of the variable. A default removes
-`undefined`, because TypeScript knows the run-time rule (form 7). It does **not** remove `null`,
+`undefined`, because TypeScript knows the run-time rule (form 7). It does not remove `null`,
 because at run time `null` does not trigger the default (pitfall 2): the type and the behaviour
 agree, and the output shows `null`.
 
@@ -1027,7 +1027,7 @@ The whole guide (every section of this README) is also a LaTeX document, in the 
 
 - `latex/destructuring-guide.tex`: the LaTeX source.
 - `latex/destructuring-guide.pdf`: the PDF, with a title page, a linked table of contents,
-  numbered sections, headers with my name, code typeset with the **minted** package (Pygments
+  numbered sections, headers with my name, code typeset with the minted package (Pygments
   colours, line breaking for long lines) and the tables as real `longtable` tables.
 - `latex/build.sh`, `latex/header.tex`, `latex/minted.lua`, `latex/metadata.yaml`: how it is made.
 
@@ -1079,7 +1079,7 @@ D1 Map first entry: Kadıköy 5
 
 An array pattern does not read `value[0]`, `value[1]`. It calls `value[Symbol.iterator]()` and
 then `next()` once for each place in the pattern. That is why it works on strings, `Set`, `Map`
-and generators. It also explains the emoji: a string's iterator walks by **code points**, so the
+and generators. It also explains the emoji: a string's iterator walks by code points, so the
 ship comes out whole, while `shipLine[0]` reads one UTF-16 unit, which is only half of the emoji.
 A `Set` iterator never gives the duplicate, so the third place is `undefined`.
 
@@ -1115,8 +1115,8 @@ D1   generator finally block
 D1 generator rest: [ 'Kabataş', 'Karaköy', 'Kasımpaşa' ]
 ```
 
-With `[g1, g2]` the generator gave only **two** piers and then its `finally`
-ran **without** "loop ended normally". So the pattern did not run the generator to the end; it
+With `[g1, g2]` the generator gave only two piers and then its `finally`
+ran without "loop ended normally". So the pattern did not run the generator to the end; it
 took two values and then closed the iterator early by calling its `return()` method (the
 specification calls this *IteratorClose*). With a rest element the pattern must ask for
 everything, so the loop really ends. A first version of this experiment printed "return() was
@@ -1150,7 +1150,7 @@ D2 earlier variable: Kadıköy Kadıköy
 D2 later variable: ReferenceError - Cannot access 'y' before initialization
 ```
 
-A default is an expression that runs **only when it is needed**: the function with a side effect
+A default is an expression that runs only when it is needed: the function with a side effect
 was not called for the first pattern at all. Defaults run left to right, one variable after the
 other, so a default can use a variable that is *earlier* in the same pattern (`to = from`), but
 a *later* one is still in the temporal dead zone, the same as using a `let` before its line.
@@ -1201,8 +1201,8 @@ D3 dynamic import + rename: function
 ```
 
 - `catch` takes a pattern like a parameter does (form 11), so I can take only `name` and `message`.
-- `for...in` gives the **keys** as strings. A pattern there is legal but means something
-  surprising: `[firstChar, secondChar]` takes the first two **letters** of each key (a string is
+- `for...in` gives the keys as strings. A pattern there is legal but means something
+  surprising: `[firstChar, secondChar]` takes the first two letters of each key (a string is
   iterable, D1). For pairs you need `for...of` with `Object.entries` (form 12).
 - In an assignment (not a declaration) the targets can be any place you can assign to: object
   properties, array items, even with defaults. Swapping two items of an array is form 3 with
@@ -1263,7 +1263,7 @@ D5 First<string[]>: undefined
 
 `T extends [infer F, ...infer R]` is the type-level twin of `const [f, ...r] = value`: TypeScript
 tries to match the tuple type against the pattern and, if it fits, gives names to the parts.
-`Last` shows something the value level **cannot** do: a rest element before the last one
+`Last` shows something the value level cannot do: a rest element before the last one
 (`[...unknown[], infer L]`) is allowed in types, but `const [...a, last] = list` is a syntax
 error. The checks are real: `const wrong: First<typeof l> = 'Karaköy'` gives
 `error TS2322: Type '"Karaköy"' is not assignable to type '"Kadıköy"'.` `First<string[]>` is
@@ -1347,7 +1347,7 @@ if (+major < 12 || +major === 12 && +minor < 17 || +major === 13 && +minor < 13)
 Form 1: values by position from `"22.23.4".split(".")`. **Without destructuring:**
 `const parts = process.versions.node.split("."); const major = parts[0]; const minor = parts[1];`.
 The patch number is simply not named (the pattern is shorter than the array, and that is fine).
-A detail: `major` and `minor` are **strings**, which is why every comparison has a `+` in front
+A detail: `major` and `minor` are strings, which is why every comparison has a `+` in front
 to make them numbers. In TypeScript with `noUncheckedIndexedAccess` they would be
 `string | undefined` (T3).
 
@@ -1412,10 +1412,10 @@ const { heading, children, forceMount, ...etc } = props
 )}
 ```
 
-This is exactly my P5 decision. A group has a **heading** and **items**. The heading is a
+This is exactly my P5 decision. A group has a heading and items. The heading is a
 **prop**, because the component must know which part is the heading: it puts it in its own
 `<div>`, gives it an `id` and `aria-hidden`, and does not render it at all when it is missing
-(`heading && ...`, the `false` case of P3). The items are **children**, because the group does not
+(`heading && ...`, the `false` case of P3). The items are children, because the group does not
 need to understand them, it only wraps them. Used like:
 `<Command.Group heading="Piers"><Command.Item>Kadıköy</Command.Item></Command.Group>`.
 
