@@ -1,2 +1,13 @@
 node_modules
 dist
+# LaTeX build files (Bonus 1); the .tex and the .pdf are kept
+latex/*.aux
+latex/*.log
+latex/*.out
+latex/*.toc
+latex/*.xdv
+latex/*.fls
+latex/*.fdb_latexmk
+latex/_minted*
+latex/guide.md
+latex/build.log

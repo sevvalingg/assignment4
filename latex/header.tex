@@ -1,0 +1,27 @@
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont[Scale=0.85]{DejaVu Sans Mono}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\definecolor{codebg}{HTML}{F4F7FB}
+\definecolor{coderule}{HTML}{D3DCE8}
+\definecolor{kw}{HTML}{6A3FB0}
+\definecolor{str}{HTML}{0B6B50}
+\definecolor{com}{HTML}{546880}
+\usepackage{minted}
+\setminted{breaklines,breakanywhere,fontsize=\small,bgcolor=codebg,frame=single,rulecolor=coderule,framesep=4pt,style=friendly}
+\usepackage{titlesec}
+\titleformat{\section}{\sffamily\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+\definecolor{accent}{HTML}{1A58A5}
+\AtBeginDocument{\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small Destructuring Field Guide}
+\fancyhead[R]{\sffamily\small Şevval Boyraz, 2200004208}
+\fancyfoot[C]{\sffamily\small\thepage}
+\setlength{\headheight}{14pt}
+\sloppy

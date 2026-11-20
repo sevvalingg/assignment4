@@ -681,7 +681,7 @@ P2 key: <span>key is undefined</span>
 ```
 
 and prints this warning on stderr (so it is not in `output.txt`):
-`ShowKey: \`key\` is not a prop. Trying to access it will result in \`undefined\` being returned.`
+`` ShowKey: `key` is not a prop. Trying to access it will result in `undefined` being returned. ``
 
 ### P3: what children can be
 
@@ -1018,6 +1018,445 @@ wrong. Every error below I produced by compiling the wrong line with `npm run ch
 | 10 `const { [k]: v } = t` | computed key | a `Record<string, T>` or `keyof` type | `v.toUpperCase()`: `TS18048: 'v10' is possibly 'undefined'.` |
 | 11 `function f({ a } = {})` | pattern and defaults | a type after the pattern: `({ a }: Options = {})` | no type: `TS7031: Binding element 'line' implicitly has an 'any' type.` |
 | 12 `for (const [k, v] of map)` | the loop | `new Map<string, number>()` | `count.toUpperCase()`: `TS2339: Property 'toUpperCase' does not exist on type 'number'.` |
+
+## Bonus 1: LaTeX
+
+Bonus 1: LaTeX
+
+The whole guide (every section of this README) is also a LaTeX document, in the folder `latex/`:
+
+- `latex/destructuring-guide.tex`: the LaTeX source.
+- `latex/destructuring-guide.pdf`: the PDF, with a title page, a linked table of contents,
+  numbered sections, headers with my name, code typeset with the **minted** package (Pygments
+  colours, line breaking for long lines) and the tables as real `longtable` tables.
+- `latex/build.sh`, `latex/header.tex`, `latex/minted.lua`, `latex/metadata.yaml`: how it is made.
+
+Commands I used (in a Linux shell with pandoc 3.1.3, TeX Live XeLaTeX and Pygments 2.21):
+
+```
+cd latex
+sh build.sh
+```
+
+`build.sh` does three things: it converts `../README.md` to LaTeX with pandoc, using
+`minted.lua` (a small pandoc filter that turns every code block into a `minted` environment) and
+`header.tex` (fonts, colours, page layout); it gives the two wide tables fixed column widths so
+they wrap inside the page; and it compiles with
+`latexmk -xelatex -shell-escape destructuring-guide.tex` (`-shell-escape` is needed by minted
+to call Pygments). The log has no errors and no overfull boxes.
+
+Why minted and not listings: I tried `listings` first, but under XeLaTeX it cannot handle
+characters above code 255, and Turkish has several (`ı`, `ş`, `ğ`, `İ`). The output was
+`'ıKadköy-Karaköy-Eminönü'` instead of `'Kadıköy-Karaköy-Eminönü'`: listings moved the `ı` to the
+start of the word. Even the usual fix (`literate={ı}{{\i}}1 ...`) did not change it. minted gives
+the text to Pygments and back to XeLaTeX as Unicode, so every letter is right. The one character
+I had to replace is the ship emoji in D1, because the DejaVu fonts have no colour emoji; in the
+PDF it is written `[ship]`.
+
+## Bonus 2: Depth
+
+Bonus 2: Depth
+
+Code: `js/depth.mjs` (D1–D4) and `ts/depth-types.tsx` (D5–D8). Run with `npm run bonus`. The
+outputs below are from that run.
+
+### D1: what an array pattern really calls
+
+```js
+const [k, a, d] = 'Kadıköy'
+const [ship, firstLetter] = '🚢Kadıköy'
+const [p1, p2, p3] = new Set(['Kadıköy', 'Kadıköy', 'Eminönü'])
+const [[firstPier, firstCount]] = new Map([['Kadıköy', 5], ['Beşiktaş', 2]])
+```
+
+```
+D1 string: K a d
+D1 emoji by pattern: 🚢 K
+D1 emoji by index: "\ud83d" "\udea2" (two halves of one emoji)
+D1 Set: Kadıköy Eminönü undefined
+D1 Map first entry: Kadıköy 5
+```
+
+An array pattern does not read `value[0]`, `value[1]`. It calls `value[Symbol.iterator]()` and
+then `next()` once for each place in the pattern. That is why it works on strings, `Set`, `Map`
+and generators. It also explains the emoji: a string's iterator walks by **code points**, so the
+ship comes out whole, while `shipLine[0]` reads one UTF-16 unit, which is only half of the emoji.
+A `Set` iterator never gives the duplicate, so the third place is `undefined`.
+
+To see the calls, I used a generator that logs every pier it gives and has a `finally` block:
+
+```js
+function* halicPiers() {
+  try {
+    for (const pier of ['Beşiktaş', 'Kabataş', 'Karaköy', 'Kasımpaşa']) {
+      console.log('D1   generator gives:', pier)
+      yield pier
+    }
+    console.log('D1   generator loop ended normally')
+  } finally {
+    console.log('D1   generator finally block')
+  }
+}
+const [g1, g2] = halicPiers()
+const [, ...afterFirst] = halicPiers()
+```
+
+```
+D1   generator gives: Beşiktaş
+D1   generator gives: Kabataş
+D1   generator finally block
+D1 generator result: Beşiktaş Kabataş
+D1   generator gives: Beşiktaş
+D1   generator gives: Kabataş
+D1   generator gives: Karaköy
+D1   generator gives: Kasımpaşa
+D1   generator loop ended normally
+D1   generator finally block
+D1 generator rest: [ 'Kabataş', 'Karaköy', 'Kasımpaşa' ]
+```
+
+With `[g1, g2]` the generator gave only **two** piers and then its `finally`
+ran **without** "loop ended normally". So the pattern did not run the generator to the end; it
+took two values and then closed the iterator early by calling its `return()` method (the
+specification calls this *IteratorClose*). With a rest element the pattern must ask for
+everything, so the loop really ends. A first version of this experiment printed "return() was
+called" in the `finally` block, which was wrong for the rest case: `finally` also runs when the
+loop ends normally. The extra "loop ended normally" line is what tells the two cases apart.
+
+A custom object with only `Symbol.iterator` works too, and `[t1]` called `next()` exactly once
+(`D1   next() call 1`): the pattern does not ask for one more item to check whether the iterator is
+finished. A plain object has no `Symbol.iterator`, so
+`const [x] = { line: 'Kadıköy-Beşiktaş' }` is
+`TypeError - {(intermediate value)} is not iterable`.
+
+### D2: when defaults are evaluated
+
+```js
+function fallbackPier(reason) {
+  console.log(`D2   fallbackPier() called (${reason})`)
+  return 'Eminönü'
+}
+const [given = fallbackPier('first pattern')] = ['Kadıköy']
+const [missing = fallbackPier('second pattern')] = []
+const [from = 'Kadıköy', to = from] = []
+new Function('const [x = y, y = 1] = []; return x')()
+```
+
+```
+D2 value given: Kadıköy
+D2   fallbackPier() called (second pattern)
+D2 value missing: Eminönü
+D2 earlier variable: Kadıköy Kadıköy
+D2 later variable: ReferenceError - Cannot access 'y' before initialization
+```
+
+A default is an expression that runs **only when it is needed**: the function with a side effect
+was not called for the first pattern at all. Defaults run left to right, one variable after the
+other, so a default can use a variable that is *earlier* in the same pattern (`to = from`), but
+a *later* one is still in the temporal dead zone, the same as using a `let` before its line.
+
+The order of reading also follows the pattern, not the object. With getters that log:
+
+```js
+const watched = {
+  get line() { console.log('D2   read line'); return 'Kadıköy-Beşiktaş' },
+  get departure() { console.log('D2   read departure'); return '18:10' },
+}
+const { departure: dep, line: lin } = watched
+```
+
+```
+D2   read departure
+D2   read line
+```
+
+`departure` is read first because it is first in my pattern, although `line` is first in the
+object.
+
+### D3: destructuring in other places
+
+```js
+try { null.line } catch ({ name, message }) { console.log('D3 catch:', name, '|', message) }
+
+for (const [firstChar, secondChar] in counts) { ... }          // counts = { Kadıköy: 5, Beşiktaş: 2 }
+for (const [pier, count] of Object.entries(counts)) { ... }
+
+;[board.from, board.to] = ['Kabataş', 'Kadıköy']
+;[route[0], route[2]] = [route[2], route[0]]
+;({ line: board.line = 'bilinmiyor', operator: board.operator } = { operator: 'Şehir Hatları' })
+
+const { renderToStaticMarkup: render } = await import('react-dom/server')
+```
+
+```
+D3 catch: TypeError | Cannot read properties of null (reading 'line')
+D3 for...in pattern: K a
+D3 for...in pattern: B e
+D3 for...of entries: Kadıköy 5
+D3 for...of entries: Beşiktaş 2
+D3 property targets: { from: 'Kabataş', to: 'Kadıköy' }
+D3 swap array items: [ 'Kadıköy', 'Karaköy', 'Eminönü' ]
+D3 object pattern into properties, with default: { from: 'Kabataş', to: 'Kadıköy', line: 'bilinmiyor', operator: 'Şehir Hatları' }
+D3 dynamic import + rename: function
+```
+
+- `catch` takes a pattern like a parameter does (form 11), so I can take only `name` and `message`.
+- `for...in` gives the **keys** as strings. A pattern there is legal but means something
+  surprising: `[firstChar, secondChar]` takes the first two **letters** of each key (a string is
+  iterable, D1). For pairs you need `for...of` with `Object.entries` (form 12).
+- In an assignment (not a declaration) the targets can be any place you can assign to: object
+  properties, array items, even with defaults. Swapping two items of an array is form 3 with
+  `route[0]` and `route[2]` as targets.
+- `import { a as b } from '...'` looks like destructuring but is a different syntax: it renames
+  with `as`, not `:`, it cannot have defaults and it cannot be nested. A *dynamic* `import()`
+  returns a normal object (a promise of it), so there a real object pattern with a rename works.
+
+### D4: when destructuring makes code worse
+
+```js
+const { sailing: { pier: { name: deepName }, times: { first: deepFirst, last: deepLast } } } = trip
+```
+
+```
+D4 deep pattern: Kadıköy 07:30 23:45
+```
+
+It works, but it is hard to read (three levels, three renames on one line), and if any level is
+missing the whole line throws (form 9). Refactored, one level per line and with `?.` where data
+can be missing:
+
+```js
+const { pier, times } = trip.sailing
+const pierName = pier?.name ?? 'bilinmiyor'
+const { first, last } = times
+```
+
+```
+D4 refactored: Kadıköy 07:30 23:45
+```
+
+My rule after this: at most one nested level in a pattern, and no rename inside a nested part.
+Long lists of renames are a sign that a plain `const x = obj.y` is clearer.
+
+### D5: `infer` is a pattern for types
+
+```ts
+type First<T extends readonly unknown[]> = T extends readonly [infer F, ...unknown[]] ? F : undefined
+type Rest<T extends readonly unknown[]> = T extends readonly [unknown, ...infer R] ? R : []
+type Last<T extends readonly unknown[]> = T extends readonly [...unknown[], infer L] ? L : undefined
+
+const kadikoyLine = ['Kadıköy', 'Karaköy', 'Eminönü'] as const
+const start: First<typeof kadikoyLine> = 'Kadıköy'
+const others: Rest<typeof kadikoyLine> = ['Karaköy', 'Eminönü']
+const end: Last<typeof kadikoyLine> = 'Eminönü'
+
+const [startValue, ...othersValue] = kadikoyLine
+const sameStart: First<typeof kadikoyLine> = startValue
+const sameOthers: Rest<typeof kadikoyLine> = othersValue
+```
+
+```
+D5 First/Rest/Last: Kadıköy [ 'Karaköy', 'Eminönü' ] Eminönü
+D5 same as the value pattern: Kadıköy [ 'Karaköy', 'Eminönü' ]
+D5 First<string[]>: undefined
+```
+
+`T extends [infer F, ...infer R]` is the type-level twin of `const [f, ...r] = value`: TypeScript
+tries to match the tuple type against the pattern and, if it fits, gives names to the parts.
+`Last` shows something the value level **cannot** do: a rest element before the last one
+(`[...unknown[], infer L]`) is allowed in types, but `const [...a, last] = list` is a syntax
+error. The checks are real: `const wrong: First<typeof l> = 'Karaköy'` gives
+`error TS2322: Type '"Karaköy"' is not assignable to type '"Kadıköy"'.` `First<string[]>` is
+`undefined`, because a `string[]` does not match a tuple with at least one item; this is the
+type-level version of T3.
+
+### D6–D8: objects, parameters and generic components
+
+```ts
+type PierNameOf<T> = T extends { pier: { name: infer N } } ? N : never   // D6: like { pier: { name } }
+type DescribeOptions = Parameters<typeof describeSailing>[0]             // D7: the form 11 options type
+type PierBadgeProps = ComponentProps<typeof PierBadge>                   // D7: props of my component
+
+type ListProps<T> = { items: readonly T[]; children: (item: T, index: number) => ReactNode }
+function List<T>({ items, children }: ListProps<T>) { ... }              // D8
+<List items={trips}>{({ from, to, minutes }) => `${from} → ${to}, ${minutes} dk`}</List>
+```
+
+```
+D6 nested infer: Beşiktaş
+D7 Parameters: Kadıköy-Beşiktaş (ekspres)
+D7 ComponentProps<typeof>: <span>Üsküdar (Anadolu)</span>
+D8 generic component: <ul><li>Kabataş → Kadıköy, 20 dk</li><li>Beşiktaş → Üsküdar, 10 dk</li></ul>
+```
+
+`infer` works inside object types the same way (D6 is form 9 for types). `Parameters<F>` takes a
+function type apart into a tuple, and `[0]` is the options object of form 11, so a caller can
+reuse the type without exporting it. In D8 the component is generic: `T` is inferred from
+`items`, so the render prop (P3) gets `{ from, to, minutes }` with the type `Trip` without my
+writing it. When I gave items without `to`, the pattern `({ to })` was rejected:
+`error TS2339: Property 'to' does not exist on type '{ from: string; }'.`
+
+## Bonus 3: Real code
+
+Bonus 3: Real code
+
+Two sources, both with exact file and line:
+
+- **A library I have installed:** `esbuild` 0.28.2 in `node_modules/esbuild/lib/main.js` (it is
+  installed by `tsx`, which runs every example in this project).
+- **An open-source project:** [cmdk](https://github.com/pacocoursey/cmdk), a React command-menu
+  component, file `cmdk/src/index.tsx` at commit
+  [`dd2250e`](https://github.com/pacocoursey/cmdk/blob/dd2250ed608443e8f32bafc5fa2d1d07a3746aa3/cmdk/src/index.tsx)
+  (2025-10-28). Line numbers are for that commit.
+
+### Case 1: esbuild, `main.js:193` (form 5)
+
+```js
+decodeUTF8 = (bytes) => {
+  let { buffer, byteOffset, byteLength } = bytes;
+  return Buffer.from(buffer, byteOffset, byteLength).toString();
+};
+```
+
+**Without destructuring:** `return Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength).toString();`
+
+Form 5: three properties by name. The variable names are exactly the names of the parameters of
+`Buffer.from`, so the pattern reads like documentation of what the call needs. Here I think it
+is a good use.
+
+### Case 2: esbuild, `main.js:1745–1747` (form 5, and pitfall 1 avoided)
+
+```js
+if (!e.location) return `
+error: ${e.text}`;
+let { file, line, column } = e.location;
+```
+
+Form 5 again, but notice the line before it: `e.location` can be missing, and
+`let { file } = undefined` would be the `TypeError` of pitfall 1. The authors check first and
+return early. **Without destructuring:** `const file = e.location.file` (and the same check is
+still needed).
+
+### Case 3: esbuild, `main.js:2093` (form 1 on a string array)
+
+```js
+let [major, minor] = process.versions.node.split(".");
+if (+major < 12 || +major === 12 && +minor < 17 || +major === 13 && +minor < 13) {
+```
+
+Form 1: values by position from `"22.23.4".split(".")`. **Without destructuring:**
+`const parts = process.versions.node.split("."); const major = parts[0]; const minor = parts[1];`.
+The patch number is simply not named (the pattern is shorter than the array, and that is fine).
+A detail: `major` and `minor` are **strings**, which is why every comparison has a `+` in front
+to make them numbers. In TypeScript with `noUncheckedIndexedAccess` they would be
+`string | undefined` (T3).
+
+### Case 4: esbuild, `main.js:2271` (form 1, a function that returns a pair)
+
+```js
+let [command, args] = esbuildCommandAndArgs();
+let child = child_process.spawn(command, args.concat(`--service=${"0.28.2"}`, "--ping"), { ... });
+```
+
+Exactly my form 1 (`nextFerry()`): a function returns two values that belong together. **Without
+destructuring:** `const result = esbuildCommandAndArgs(); const command = result[0]; const args = result[1];`.
+The same line appears again at `main.js:2364`.
+
+### Case 5: esbuild, `main.js:2394` (form 6, rename)
+
+```js
+let { port1: mainPort, port2: workerPort } = new worker_threads2.MessageChannel();
+```
+
+Form 6: `MessageChannel` has two ports with meaningless names (`port1`, `port2`); the rename gives
+each one the role it has in this code. **Without destructuring:**
+`const channel = new MessageChannel(); const mainPort = channel.port1; const workerPort = channel.port2;`.
+This is the best "use it when" for form 6 that I found.
+
+### Case 6: cmdk `Command`, `index.tsx:191–202` (forms 5, 7 and 8 on React props)
+
+```tsx
+const {
+  label,
+  children,
+  value,
+  onValueChange,
+  filter,
+  shouldFilter,
+  loop,
+  disablePointerSelection = false,
+  vimBindings = true,
+  ...etc
+} = props
+```
+
+and later, line 577: `<Primitive.div ... {...etc}>`.
+
+This is P4 in a real library: the props the component understands are taken out by name (form 5),
+two of them get defaults (form 7, like P6), and everything else goes into `etc` (form 8) and is
+spread onto the real `<div>`, so a user can pass `className`, `style` or `data-*` attributes.
+**Props and children here:** `label`, `value`, `filter`, `loop` ... are props (attributes the user
+writes in JSX); `children` is the menu content written between `<Command>` and `</Command>`.
+**Without destructuring:** eleven lines of `const label = props.label`, two with
+`=== undefined ? ... : ...`, and a manual copy of `props` with nine `delete`s for `etc`.
+
+### Case 7: cmdk `Group`, `index.tsx:730` (props vs children, P5)
+
+```tsx
+const { heading, children, forceMount, ...etc } = props
+...
+{heading && (
+  <div ref={headingRef} cmdk-group-heading="" aria-hidden id={headingId}>
+    {heading}
+  </div>
+)}
+```
+
+This is exactly my P5 decision. A group has a **heading** and **items**. The heading is a
+**prop**, because the component must know which part is the heading: it puts it in its own
+`<div>`, gives it an `id` and `aria-hidden`, and does not render it at all when it is missing
+(`heading && ...`, the `false` case of P3). The items are **children**, because the group does not
+need to understand them, it only wraps them. Used like:
+`<Command.Group heading="Piers"><Command.Item>Kadıköy</Command.Item></Command.Group>`.
+
+### Case 8: cmdk `List`, `index.tsx:834` (a default for a prop, P6)
+
+```tsx
+const { children, label = 'Suggestions', ...etc } = props
+```
+
+`label` is used for `aria-label` of the list. The default only applies when the prop is
+`undefined`, so `<Command.List label={null}>` would give no label at all (P6 and pitfall 2).
+
+### Case 9 (where destructuring makes the code worse): cmdk `Item`, `index.tsx:704`
+
+```tsx
+const { disabled, value: _, onSelect: __, forceMount: ___, keywords: ____, ...etc } = props
+```
+
+The goal is to put "every prop except these four" into `etc`, so that `value`, `onSelect`,
+`forceMount` and `keywords` are not spread onto the `<div>` as HTML attributes. Because the only
+way to leave a property out of an object rest is to name it in the pattern, the authors rename
+four props to the throw-away names `_`, `__`, `___`, `____` (form 6 used only to avoid a name
+clash). The names say nothing, a fifth excluded prop would need `_____`, and a reader has to
+know the trick to understand why the line is there. **Without destructuring for the exclusion,**
+a small helper is clearer:
+
+```ts
+function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+  const copy = { ...obj }
+  for (const key of keys) delete copy[key]
+  return copy
+}
+const etc = omit(props, 'disabled', 'value', 'onSelect', 'forceMount', 'keywords')
+```
+
+I checked that this helper compiles in strict mode; with `{ disabled: true, value: 'x', className: 'c' }`
+it returns `{ className: 'c' }`. It is longer, but it says what it does ("omit these") instead of
+hiding it in renames.
+
+(The handout also suggests the Task Manager starter from Assignment 3; it is not in this project
+folder, so my cases come from the installed library and the open-source project.)
 
 ## My own log
 
