@@ -8,6 +8,13 @@ function minMax(numbers: number[]): [number, number] {
 const [lowest, highest] = minMax([4, 9, 2])
 console.log('form 1:', lowest, highest) // form 1: 2 9
 
+// Form 1 with my own data: the tuple return type says "exactly a time and a line".
+function nextFerry(): [time: string, line: string] {
+  return ['08:15', 'Kadıköy-Karaköy-Eminönü']
+}
+const [nextTime, nextLine] = nextFerry() // both: string
+console.log('form 1 (ferry):', nextTime, nextLine)
+
 // Form 2: skip an item and collect the rest.
 // With noUncheckedIndexedAccess, firstStop is `string | undefined`: the array
 // could be shorter than the pattern. The rest is always `string[]`.
