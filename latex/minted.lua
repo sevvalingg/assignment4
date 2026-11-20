@@ -1,3 +1,4 @@
+-- Şevval Boyraz, 2200004208
 -- Pandoc Lua filter: code blocks -> minted, inline code -> \texttt with break points.
 local langs = { js = 'javascript', jsx = 'jsx', ts = 'typescript', tsx = 'tsx', sh = 'bash', md = 'markdown' }
 

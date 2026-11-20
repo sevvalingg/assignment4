@@ -1,4 +1,5 @@
 #!/bin/sh
+# Şevval Boyraz, 2200004208
 # Build the LaTeX version of the guide (Bonus 1) from ../README.md.
 # Needs: pandoc, a TeX Live with xelatex and minted, and Python with Pygments.
 set -e

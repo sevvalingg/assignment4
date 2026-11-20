@@ -1980,6 +1980,15 @@ does not render it at all when it is missing
 group does not need to understand them, it only wraps them. Used like:
 \texttt{<Command.\allowbreak{}Group heading=\allowbreak{}"Piers"><Command.\allowbreak{}Item>Kadıköy</\allowbreak{}Command.\allowbreak{}Item></\allowbreak{}Command.\allowbreak{}Group>}.
 
+\textbf{Without destructuring:}
+\texttt{const heading =\allowbreak{} props.\allowbreak{}heading},
+\texttt{const children =\allowbreak{} props.\allowbreak{}children},
+\texttt{const forceMount =\allowbreak{} props.\allowbreak{}forceMount},
+and \texttt{etc} as a copy of \texttt{props} with those three deleted.
+The code even mixes both styles: it destructures \texttt{heading} but
+later still writes \texttt{props.\allowbreak{}heading} (line 744,
+\texttt{useValue(\allowbreak{}id,\allowbreak{} ref,\allowbreak{} [\allowbreak{}props.\allowbreak{}value,\allowbreak{} props.\allowbreak{}heading,\allowbreak{} headingRef])}).
+
 \hypertarget{case-8-cmdk-list-indextsx834-a-default-for-a-prop-p6}{%
 \subsection{\texorpdfstring{Case 8: cmdk \texttt{List},
 \texttt{index.\allowbreak{}tsx:\allowbreak{}834} (a default for a prop,
@@ -1993,6 +2002,11 @@ const { children, label = 'Suggestions', ...etc } = props
 only applies when the prop is \texttt{undefined}, so
 \texttt{<Command.\allowbreak{}List label=\allowbreak{}\{null\}>} would
 give no label at all (P6 and pitfall 2).
+
+\textbf{Without destructuring:}
+\texttt{const label =\allowbreak{} props.\allowbreak{}label =\allowbreak{}=\allowbreak{}=\allowbreak{} undefined ? 'Suggestions' :\allowbreak{} props.\allowbreak{}label}
+(plus \texttt{children} and the copy for \texttt{etc}). The pattern
+makes the default visible right where the props are read.
 
 \hypertarget{case-9-where-destructuring-makes-the-code-worse-cmdk-item-indextsx704}{%
 \subsection{\texorpdfstring{Case 9 (where destructuring makes the code

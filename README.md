@@ -1419,6 +1419,11 @@ This is exactly my P5 decision. A group has a **heading** and **items**. The hea
 need to understand them, it only wraps them. Used like:
 `<Command.Group heading="Piers"><Command.Item>Kadıköy</Command.Item></Command.Group>`.
 
+**Without destructuring:** `const heading = props.heading`, `const children = props.children`,
+`const forceMount = props.forceMount`, and `etc` as a copy of `props` with those three deleted.
+The code even mixes both styles: it destructures `heading` but later still writes
+`props.heading` (line 744, `useValue(id, ref, [props.value, props.heading, headingRef])`).
+
 ### Case 8: cmdk `List`, `index.tsx:834` (a default for a prop, P6)
 
 ```tsx
@@ -1427,6 +1432,10 @@ const { children, label = 'Suggestions', ...etc } = props
 
 `label` is used for `aria-label` of the list. The default only applies when the prop is
 `undefined`, so `<Command.List label={null}>` would give no label at all (P6 and pitfall 2).
+
+**Without destructuring:**
+`const label = props.label === undefined ? 'Suggestions' : props.label` (plus `children` and
+the copy for `etc`). The pattern makes the default visible right where the props are read.
 
 ### Case 9 (where destructuring makes the code worse): cmdk `Item`, `index.tsx:704`
 
